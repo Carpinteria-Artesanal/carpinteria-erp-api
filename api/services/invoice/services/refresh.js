@@ -1,4 +1,4 @@
-const { InvoiceModel } = require('arroyo-erp-models');
+const { InvoiceModel } = require('carpinteria-erp-models');
 const { calcDeliveryOrdersData } = require('../utils/invoices');
 
 /**

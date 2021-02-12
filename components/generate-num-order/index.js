@@ -1,4 +1,4 @@
-const { AutoIncrement } = require('arroyo-erp-models');
+const { AutoIncrement } = require('carpinteria-erp-models');
 
 /**
  * Generate new order number for the year

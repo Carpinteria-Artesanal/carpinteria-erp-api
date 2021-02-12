@@ -1,5 +1,5 @@
 /* eslint-disable nonblock-statement-body-position */
-const { AutoIncrement } = require('arroyo-erp-models');
+const { AutoIncrement } = require('carpinteria-erp-models');
 
 const LogService = require('../log.service');
 

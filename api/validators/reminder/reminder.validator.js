@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-const { ReminderModel } = require('arroyo-erp-models');
+const { ReminderModel } = require('carpinteria-erp-models');
 const {
   reminderErrors,
 } = require('../../../errors');

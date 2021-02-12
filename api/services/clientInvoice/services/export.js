@@ -1,5 +1,5 @@
 const carbone = require('carbone');
-const { ClientInvoiceModel, ClientModel } = require('arroyo-erp-models');
+const { ClientInvoiceModel, ClientModel } = require('carpinteria-erp-models');
 const { formatDate } = require('../../../../utils');
 
 /* istanbul ignore next */

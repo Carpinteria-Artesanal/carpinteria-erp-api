@@ -1,4 +1,4 @@
-const { ReminderModel } = require('arroyo-erp-models');
+const { ReminderModel } = require('carpinteria-erp-models');
 
 const LogService = require('../log.service');
 

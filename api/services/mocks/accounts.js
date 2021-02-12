@@ -1,4 +1,4 @@
-const {mongoose} = require('arroyo-erp-models');
+const { mongoose } = require('carpinteria-erp-models');
 
 module.exports = {
   accounts: [
@@ -15,4 +15,4 @@ module.exports = {
       password: '223344',
     },
   ],
-}
+};

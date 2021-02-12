@@ -1,7 +1,7 @@
 const {
   ProductModel,
   PriceModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 
 const { roundNumber } = require('../../../utils');
 

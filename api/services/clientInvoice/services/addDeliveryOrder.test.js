@@ -1,4 +1,4 @@
-const { ClientInvoiceModel, mongoose } = require('arroyo-erp-models');
+const { ClientInvoiceModel, mongoose } = require('carpinteria-erp-models');
 const addDeliveryOrder = require('./addDeliveryOrder');
 const testDB = require('../../../../test/test-db')(mongoose);
 

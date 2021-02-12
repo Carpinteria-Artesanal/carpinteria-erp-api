@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const supertest = require('supertest');
-const { AccountModel } = require('arroyo-erp-models');
+const { AccountModel } = require('carpinteria-erp-models');
 
 const defaultCredentials = {
   username: `test ${Math.random() * 20}`,

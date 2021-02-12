@@ -1,4 +1,4 @@
-const { AccountModel } = require('arroyo-erp-models');
+const { AccountModel } = require('carpinteria-erp-models');
 const { compare } = require('bcrypt');
 const {
   InvalidLogin, UserNotFound, UserExist, InvalidPassword,

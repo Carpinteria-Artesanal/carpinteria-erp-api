@@ -4,7 +4,7 @@ const {
   ClientModel,
   ClientInvoiceModel,
   AutoIncrement,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 const testDB = require('../../../../test/test-db')(mongoose);
 const requestLogin = require('../../../../test/request-login');
 const app = require('../../../../index');

@@ -1,6 +1,6 @@
 const {
   InvoiceModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 
 const {
   calcNewShopping,

@@ -1,4 +1,4 @@
-const { ProviderModel, BillingModel } = require('arroyo-erp-models');
+const { ProviderModel, BillingModel } = require('carpinteria-erp-models');
 
 /**
  * Adapter billing response

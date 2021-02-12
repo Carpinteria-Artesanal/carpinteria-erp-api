@@ -3,7 +3,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const {
   ProductModel,
   PriceChangeModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 
 const LogService = require('../../log.service');
 const { roundNumber } = require('../../../../utils');

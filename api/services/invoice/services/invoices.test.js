@@ -1,7 +1,7 @@
 const {
   mongoose,
   InvoiceModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 const testDB = require('../../../../test/test-db')(mongoose);
 const invoiceService = require('../invoice.service');
 

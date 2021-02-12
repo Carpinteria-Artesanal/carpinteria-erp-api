@@ -1,7 +1,7 @@
 /* eslint-disable nonblock-statement-body-position */
 const {
   ProductModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 
 /**
  * Create product

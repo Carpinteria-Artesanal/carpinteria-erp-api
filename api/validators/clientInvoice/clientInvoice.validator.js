@@ -2,7 +2,7 @@
 const {
   ClientInvoiceModel,
   AutoIncrement,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 const {
   invoiceErrors,
   commonErrors,

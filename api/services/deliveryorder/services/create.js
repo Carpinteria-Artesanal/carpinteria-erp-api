@@ -1,4 +1,4 @@
-const { DeliveryOrderModel, ProviderModel } = require('arroyo-erp-models');
+const { DeliveryOrderModel, ProviderModel } = require('carpinteria-erp-models');
 const { INITIAL_SCHEMA } = require('../constants');
 
 /**

@@ -1,4 +1,4 @@
-const { DeliveryOrderModel } = require('arroyo-erp-models');
+const { DeliveryOrderModel } = require('carpinteria-erp-models');
 
 /**
  * Refresh delivery order and remove invoice assigned

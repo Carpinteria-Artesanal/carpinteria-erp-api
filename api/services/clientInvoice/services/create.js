@@ -1,7 +1,7 @@
 const {
   ClientInvoiceModel,
   ClientModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 
 /**
  * Create invoice for client

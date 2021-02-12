@@ -1,16 +1,16 @@
-# arroyo-erp-api
+# carpinteria-erp-api
 
-![GitHub](https://img.shields.io/github/license/soker90/arroyo-erp-api)
-![](https://github.com/soker90/arroyo-erp-api/workflows/Node.js%20CI/badge.svg)
-[![dependencies Status](https://david-dm.org/soker90/arroyo-erp-api/status.svg)](https://david-dm.org/soker90/arroyo-erp-api)
-[![devDependencies Status](https://david-dm.org/soker90/arroyo-erp-api/dev-status.svg)](https://david-dm.org/soker90/arroyo-erp-api?type=dev)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=soker90_arroyo-erp-api&metric=alert_status)](https://sonarcloud.io/dashboard?id=soker90_arroyo-erp-api)
-[![codecov](https://codecov.io/gh/soker90/arroyo-erp-api/branch/master/graph/badge.svg)](https://codecov.io/gh/soker90/arroyo-erp-api)
+![GitHub](https://img.shields.io/github/license/soker90/carpinteria-erp-api)
+![](https://github.com/soker90/carpinteria-erp-api/workflows/Node.js%20CI/badge.svg)
+[![dependencies Status](https://david-dm.org/soker90/carpinteria-erp-api/status.svg)](https://david-dm.org/soker90/carpinteria-erp-api)
+[![devDependencies Status](https://david-dm.org/soker90/carpinteria-erp-api/dev-status.svg)](https://david-dm.org/soker90/carpinteria-erp-api?type=dev)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=soker90_carpinteria-erp-api&metric=alert_status)](https://sonarcloud.io/dashboard?id=soker90_carpinteria-erp-api)
+[![codecov](https://codecov.io/gh/soker90/carpinteria-erp-api/branch/master/graph/badge.svg)](https://codecov.io/gh/soker90/carpinteria-erp-api)
 
-Backend de Arroyo ERP, hecho con node.js y express. Un backoffice para gestión de pymes.
+Backend de Carpinteria ERP, hecho con node.js y express. Un backoffice de facturación.
 ---
 ## TODO
-- [ ] Swagger 
+- [ ] Swagger
 ---
 ## Requisitos
 
@@ -50,8 +50,8 @@ Para desarrollar necesitas Node.js y un gestor de paquetes para node como npm.
 
 ## Instalación
 
-    $ git clone https://github.com/soker90/arroyo-erp-api
-    $ cd arroyo-erp-api
+    $ git clone https://github.com/soker90/carpinteria-erp-api
+    $ cd carpinteria-erp-api
     $ npm i
 
 ## Ejecución

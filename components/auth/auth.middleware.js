@@ -1,4 +1,4 @@
-const { AccountModel } = require('arroyo-erp-models');
+const { AccountModel } = require('carpinteria-erp-models');
 const errorHandlers = require('../error-handlers');
 const { verifyToken, signToken } = require('./auth.service');
 const { ExpiredToken, InvalidToken } = require('../../errors/user.errors');

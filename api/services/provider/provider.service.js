@@ -1,4 +1,4 @@
-const { ProviderModel } = require('arroyo-erp-models');
+const { ProviderModel } = require('carpinteria-erp-models');
 
 const provider = require('./services/provider');
 const { TYPES_STANDARD_PROVIDER } = require('../../../constants');

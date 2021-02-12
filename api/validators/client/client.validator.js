@@ -1,4 +1,4 @@
-const { ClientModel } = require('arroyo-erp-models');
+const { ClientModel } = require('carpinteria-erp-models');
 const { clientErrors, commonErrors } = require('../../../errors');
 const { isEmptyObject } = require('../../../utils');
 

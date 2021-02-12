@@ -1,5 +1,5 @@
 /* eslint-disable nonblock-statement-body-position */
-const { ProductModel } = require('arroyo-erp-models');
+const { ProductModel } = require('carpinteria-erp-models');
 
 /**
  * Return all product witch the filter

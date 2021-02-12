@@ -1,5 +1,5 @@
 /* eslint-disable nonblock-statement-body-position */
-const { ProductModel, ProviderModel } = require('arroyo-erp-models');
+const { ProductModel, ProviderModel } = require('carpinteria-erp-models');
 
 /**
  * Create product

@@ -2,7 +2,7 @@ const carbone = require('carbone');
 const {
   BillingModel,
   ProviderModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 
 const { orderByProvider } = require('../utils');
 

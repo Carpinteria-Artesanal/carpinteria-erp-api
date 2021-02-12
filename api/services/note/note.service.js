@@ -1,5 +1,5 @@
 /* eslint-disable nonblock-statement-body-position */
-const { NoteModel } = require('arroyo-erp-models');
+const { NoteModel } = require('carpinteria-erp-models');
 
 const LogService = require('../log.service');
 

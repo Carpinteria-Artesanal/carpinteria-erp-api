@@ -1,4 +1,4 @@
-const { ClientInvoiceModel } = require('arroyo-erp-models');
+const { ClientInvoiceModel } = require('carpinteria-erp-models');
 const generateNumberInvoice = require('../../../../components/generate-num-invoice');
 
 /**

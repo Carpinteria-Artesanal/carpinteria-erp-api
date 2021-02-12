@@ -2,7 +2,7 @@
 const {
   PaymentModel,
   InvoiceModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 
 /**
  * Actualiza las facturas con la información del pago

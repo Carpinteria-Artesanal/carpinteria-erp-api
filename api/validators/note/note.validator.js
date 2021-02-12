@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-const { NoteModel } = require('arroyo-erp-models');
+const { NoteModel } = require('carpinteria-erp-models');
 const { noteErrors, commonErrors } = require('../../../errors');
 
 /**

@@ -1,4 +1,4 @@
-const { InvoiceModel } = require('arroyo-erp-models');
+const { InvoiceModel } = require('carpinteria-erp-models');
 
 /**
  * Devuelve las facturas del proveedor
