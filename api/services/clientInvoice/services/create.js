@@ -8,6 +8,7 @@ const {
  * @param {String} clientId
  */
 const create = async ({ client }) => {
+  // TODO: Posibiliad de recibir albaran y copiar su contenido
   const clientData = await ClientModel.findOne({ _id: client });
   const newInvoice = await new ClientInvoiceModel({
     client,

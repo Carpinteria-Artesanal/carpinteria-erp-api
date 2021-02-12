@@ -14,6 +14,7 @@ const clientInvoiceEdit = ({
     totals,
   },
 }) => {
+  // TODO add payments
   const newData = {
     ...(date && { date }),
     ...(totals && {
