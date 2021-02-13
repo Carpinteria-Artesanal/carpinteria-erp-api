@@ -108,37 +108,7 @@ module.exports = (
   }, {
     method: 'post',
     domain: 'client/invoices',
-    path: '/:id/deliveryOrder',
-    handler: clientInvoicesController.addDeliveryOrder,
-    bindTo: clientInvoicesController,
-    skipVersion: true,
-    middlewares: [
-      authMiddleware,
-    ],
-  }, {
-    method: 'patch',
-    domain: 'client/invoices',
-    path: '/:id/deliveryOrder/:deliveryOrder',
-    handler: clientInvoicesController.editDeliveryOrder,
-    bindTo: clientInvoicesController,
-    skipVersion: true,
-    middlewares: [
-      authMiddleware,
-    ],
-  }, {
-    method: 'delete',
-    domain: 'client/invoices',
-    path: '/:id/deliveryOrder/:deliveryOrder',
-    handler: clientInvoicesController.deleteDeliveryOrder,
-    bindTo: clientInvoicesController,
-    skipVersion: true,
-    middlewares: [
-      authMiddleware,
-    ],
-  }, {
-    method: 'post',
-    domain: 'client/invoices',
-    path: '/:id/deliveryOrder/:deliveryOrder/product',
+    path: '/:id/product',
     handler: clientInvoicesController.addProduct,
     bindTo: clientInvoicesController,
     skipVersion: true,
@@ -148,7 +118,7 @@ module.exports = (
   }, {
     method: 'patch',
     domain: 'client/invoices',
-    path: '/:id/deliveryOrder/:deliveryOrder/product/:product',
+    path: '/:id/product/:product',
     handler: clientInvoicesController.editProduct,
     bindTo: clientInvoicesController,
     skipVersion: true,
@@ -158,7 +128,7 @@ module.exports = (
   }, {
     method: 'delete',
     domain: 'client/invoices',
-    path: '/:id/deliveryOrder/:deliveryOrder/product/:product',
+    path: '/:id/product/:product',
     handler: clientInvoicesController.deleteProduct,
     bindTo: clientInvoicesController,
     skipVersion: true,

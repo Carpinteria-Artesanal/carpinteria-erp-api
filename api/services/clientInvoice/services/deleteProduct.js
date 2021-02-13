@@ -6,12 +6,10 @@ const { ClientInvoiceModel } = require('carpinteria-erp-models');
  */
 const deleteProduct = async ({
   id,
-  deliveryOrder,
   product,
 }) => ClientInvoiceModel.findOneAndUpdate({
   _id: id,
-  'deliveryOrders._id': deliveryOrder,
-}, { $pull: { 'deliveryOrders.$.products': { _id: product } } },
+}, { $pull: { products: { _id: product } } },
 { new: true });
 
 module.exports = deleteProduct;

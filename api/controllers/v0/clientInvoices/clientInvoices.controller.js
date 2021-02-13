@@ -141,58 +141,13 @@ class ClientInvoicesController {
   }
 
   /**
-   * Edit the delivery order of the client invoice
-   */
-  addDeliveryOrder(req, res) {
-    logService.logInfo('[addDeliveryOrder]  - Añade un albarán a la factura');
-    Promise.resolve(req.params)
-      .tap(this.clientInvoiceValidator.validateId)
-      .then(this.clientInvoiceService.addDeliveryOrder)
-      .then(data => res
-        .send(data))
-      .catch(this._handleError.bind(this, res));
-  }
-
-  /**
-   * Edit the delivery order of the client invoice
-   */
-  editDeliveryOrder(req, res) {
-    logService.logInfo('[addDeliveryOrder]  - Actualiza un albarán de la factura');
-    Promise.resolve(req)
-      .tap(this.clientInvoiceValidator.validateIdParam)
-      .tap(this.clientInvoiceValidator.validateDeliveryOrderParam)
-      .tap(this.clientInvoiceValidator.isValidDate)
-      .then(this.clientInvoiceService.editDeliveryOrder)
-      .then(() => res.status(204)
-        .send())
-      .catch(this._handleError.bind(this, res));
-  }
-
-  /**
-   * Delete the delivery order of the client invoice
-   */
-  deleteDeliveryOrder(req, res) {
-    logService.logInfo('[deleteDeliveryOrder]  - Elimina un albarán de la factura');
-    Promise.resolve(req.params)
-      .tap(this.clientInvoiceValidator.validateId)
-      .tap(this.clientInvoiceValidator.validateDeliveryOrder)
-      .tap(this.clientInvoiceValidator.isDORemovable)
-      .then(this.clientInvoiceService.deleteDeliveryOrder)
-      .then(() => res.status(204)
-        .send())
-      .catch(this._handleError.bind(this, res));
-  }
-
-  /**
    * Add product to the delivery order
    */
   addProduct(req, res) {
     logService.logInfo('[addProduct]  - Añade un producto a un albarán');
     Promise.resolve(req)
       .tap(this.clientInvoiceValidator.validateIdParam)
-      .tap(this.clientInvoiceValidator.validateDeliveryOrderParam)
       .tap(this.clientInvoiceValidator.validateProduct)
-      .tap(this.productService.updatePrice)
       .then(this.clientInvoiceService.addProduct)
       .then(this.clientInvoiceService.refresh)
       .then(data => res.send(data))

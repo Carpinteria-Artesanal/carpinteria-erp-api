@@ -31,9 +31,9 @@ module.exports = {
   // addDeliveryOrder,
   // editDeliveryOrder,
   // deleteDeliveryOrder,
-  addProduct,
+  addProduct, // TEST
   editProduct,
-  deleteProduct,
+  deleteProduct, // TEST
   invoiceConfirm,
   refresh,
   exportOds,

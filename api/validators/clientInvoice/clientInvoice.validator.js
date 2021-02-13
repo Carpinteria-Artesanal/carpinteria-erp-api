@@ -105,12 +105,12 @@ const isDORemovable = async ({
 const validateProduct = ({
   body: {
     name,
-    weight,
+    iva,
     unit,
     price,
   },
 }) => {
-  if (!isNumber(weight) || !isNumber(price) || !name || !unit)
+  if (!isNumber(iva) || !isNumber(price) || !name || !isNumber(unit))
     throw new invoiceErrors.InvoiceParamsMissing();
 };
 
