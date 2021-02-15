@@ -65,7 +65,7 @@ const isRemovable = async ({ id }) => {
   const lastDocument = await AutoIncrement.findOne({ name: `clientInvoice${year}` });
   let lastNumber;
   if (invoice.nInvoice)
-    lastNumber = Number(invoice.nInvoice.split('-')[1]);
+    lastNumber = Number(invoice.nInvoice.split('/')[1]);
 
   // Si está confirmada y no es la última factura del año no se puede borrar
   if (invoice.nInvoice && lastDocument?.seq && lastNumber !== lastDocument?.seq)
