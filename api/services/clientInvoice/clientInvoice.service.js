@@ -23,17 +23,14 @@ const invoice = ({ id }) => ClientInvoiceModel.findOne({ _id: id });
 
 module.exports = {
   create, // DONE 1/2
-  invoice, // DONE
-  invoices, // done
-  invoicesShort, // DONE
+  invoice,
+  invoices,
+  invoicesShort,
   invoiceEdit,
-  invoiceDelete, // TODO check delivery order and remove invoice
-  // addDeliveryOrder,
-  // editDeliveryOrder,
-  // deleteDeliveryOrder,
-  addProduct, // TEST
+  invoiceDelete,
+  addProduct,
   editProduct,
-  deleteProduct, // TEST
+  deleteProduct,
   invoiceConfirm,
   refresh,
   exportOds,
