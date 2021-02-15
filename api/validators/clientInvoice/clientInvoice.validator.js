@@ -6,7 +6,6 @@ const {
 const {
   invoiceErrors,
   commonErrors,
-  deliveryOrderErrors,
 } = require('../../../errors');
 const { isNumber } = require('../../../utils');
 
@@ -82,26 +81,6 @@ const isValidDate = ({ body: { date } }) => {
     throw new commonErrors.DateNotValid();
 };
 
-const validateDeliveryOrder = async ({ deliveryOrder }) => {
-  const doExist = await ClientInvoiceModel.exists({ 'deliveryOrders._id': deliveryOrder });
-  if (!doExist) throw new deliveryOrderErrors.DeliveryOrderNotFound();
-};
-
-const validateDeliveryOrderParam = async ({ params }) => validateDeliveryOrder(params);
-
-const isDORemovable = async ({
-  id,
-  deliveryOrder,
-}) => {
-  const invoiceDO = await ClientInvoiceModel.findOne({
-    _id: id,
-    'deliveryOrders._id': deliveryOrder,
-  }, { 'deliveryOrders.$': 1 });
-
-  if (invoiceDO?.deliveryOrders?.[0]?.products?.length)
-    throw new deliveryOrderErrors.DeliveryOrderNoRemovable();
-};
-
 const validateProduct = ({
   body: {
     name,
@@ -120,9 +99,6 @@ module.exports = {
   editBody,
   isRemovable,
   isValidDate,
-  validateDeliveryOrder,
-  isDORemovable,
-  validateDeliveryOrderParam,
   validateProduct,
   isValidForConfirmed,
 };

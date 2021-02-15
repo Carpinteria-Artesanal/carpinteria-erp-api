@@ -15,7 +15,6 @@ class ClientInvoicesController {
     invoiceValidator,
     billingService,
     providerValidator,
-    deliveryOrderService,
     autoIncrementService,
     clientValidator,
     clientInvoiceService,
@@ -31,7 +30,6 @@ class ClientInvoicesController {
     this.invoiceValidator = invoiceValidator;
     this.billingService = billingService;
     this.providerValidator = providerValidator;
-    this.deliveryOrderService = deliveryOrderService;
     this.autoIncrementService = autoIncrementService;
     this.clientValidator = clientValidator;
     this.clientInvoiceService = clientInvoiceService;
@@ -45,14 +43,12 @@ class ClientInvoicesController {
     switch (error.name) {
     case 'ClientIdNotFound':
     case 'InvoiceIdNotFound':
-    case 'DeliveryOrderNotFound':
       this.errorHandler.sendNotFound(res)(error);
       break;
     case 'ParamNotValidError':
     case 'InvoiceParamsMissing':
     case 'InvoiceNoRemovable':
     case 'DateNotValid':
-    case 'DeliveryOrderNoRemovable':
     case 'InvoiceInvalidDateInvoice':
       this.errorHandler.sendBadRequest(res)(error);
       break;
@@ -71,7 +67,6 @@ class ClientInvoicesController {
     Promise.resolve(req.params)
       .tap(this.clientInvoiceValidator.validateId)
       .then(this.clientInvoiceService.invoice)
-      // .then(this.invoiceAdapter.fullResponse)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
@@ -161,9 +156,7 @@ class ClientInvoicesController {
     logService.logInfo('[editProduct]  - Edita un producto de un albarán');
     Promise.resolve(req)
       .tap(this.clientInvoiceValidator.validateIdParam)
-      .tap(this.clientInvoiceValidator.validateDeliveryOrderParam)
       .tap(this.clientInvoiceValidator.validateProduct)
-      .tap(this.productService.updatePrice)
       .then(this.clientInvoiceService.editProduct)
       .then(this.clientInvoiceService.refresh)
       .then(data => res.send(data))
@@ -177,7 +170,6 @@ class ClientInvoicesController {
     logService.logInfo('[deleteProduct] - Elimina un producto de un albarán');
     Promise.resolve(req.params)
       .tap(this.clientInvoiceValidator.validateId)
-      .tap(this.clientInvoiceValidator.validateDeliveryOrder)
       .then(this.clientInvoiceService.deleteProduct)
       .then(this.clientInvoiceService.refresh)
       .then(data => res.send(data))

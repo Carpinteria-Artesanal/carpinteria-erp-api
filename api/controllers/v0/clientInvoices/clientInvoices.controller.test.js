@@ -12,9 +12,7 @@ const {
   commonErrors,
   invoiceErrors,
   clientErrors,
-  deliveryOrderErrors,
 } = require('../../../../errors');
-const exportOds = require('../../../services/clientInvoice/services/export');
 
 jest.mock('../../../services/clientInvoice/services/export');
 

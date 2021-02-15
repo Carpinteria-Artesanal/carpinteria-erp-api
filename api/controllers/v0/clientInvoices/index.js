@@ -8,7 +8,6 @@ module.exports = (
     invoiceService,
     paymentService,
     billingService,
-    deliveryOrderService,
     autoIncrementService,
     clientInvoiceService,
     productService,
@@ -18,7 +17,6 @@ module.exports = (
     providerValidator,
     clientValidator,
     clientInvoiceValidator,
-    deliveryOrderValidator,
   },
   {
     invoiceAdapter,
@@ -33,13 +31,11 @@ module.exports = (
     invoiceAdapter,
     billingService,
     providerValidator,
-    deliveryOrderService,
     autoIncrementService,
     clientValidator,
     clientInvoiceService,
     clientInvoiceValidator,
     clientInvoiceAdapter,
-    deliveryOrderValidator,
     productService,
   });
 
