@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 const Promise = require('bluebird');
-const { PaymentModel } = require('arroyo-erp-models');
+const { PaymentModel } = require('carpinteria-erp-models');
 const { paymentErrors, commonErrors } = require('../../../errors');
 const { TYPE_PAYMENT } = require('../../../constants');
 

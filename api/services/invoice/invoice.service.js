@@ -1,4 +1,4 @@
-const { InvoiceModel, DeliveryOrderModel } = require('arroyo-erp-models');
+const { InvoiceModel, DeliveryOrderModel } = require('carpinteria-erp-models');
 
 // Split services
 const invoiceConfirm = require('./services/invoiceConfirm');

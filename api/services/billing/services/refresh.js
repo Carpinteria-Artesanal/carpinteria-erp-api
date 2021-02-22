@@ -1,4 +1,4 @@
-const { BillingModel } = require('arroyo-erp-models');
+const { BillingModel } = require('carpinteria-erp-models');
 
 const LogService = require('../../log.service');
 const { roundNumber } = require('../../../../utils');

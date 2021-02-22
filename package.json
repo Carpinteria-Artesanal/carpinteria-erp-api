@@ -1,8 +1,9 @@
 {
-  "name": "arroyo-erp-api",
-  "version": "1.0.1",
-  "description": "API for Arroyo Erp",
+  "name": "carpinteria-erp-api",
+  "version": "0.1.0",
+  "description": "API for Carpinteria Erp",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "NODE_ENV=production NTBA_FIX_319=1000 node ./bin/www",
     "start:dev": "NODE_ENV=dev NTBA_FIX_319=1000 nodemon ./bin/www",
@@ -20,11 +21,11 @@
   "license": "MIT",
   "dependencies": {
     "@hapi/boom": "^9.1.1",
-    "arroyo-erp-models": "^1.0.2",
     "bcrypt": "^5.0.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "carbone": "^2.1.1",
+    "carpinteria-erp-models": "^0.1.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "helmet": "^4.4.1",

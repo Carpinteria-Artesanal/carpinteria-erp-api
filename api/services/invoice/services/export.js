@@ -1,5 +1,5 @@
 const carbone = require('carbone');
-const { InvoiceModel } = require('arroyo-erp-models');
+const { InvoiceModel } = require('carpinteria-erp-models');
 const { COLUMNS_INVOICES } = require('../../../../constants/invoices');
 const { formatDate } = require('../../../../utils');
 

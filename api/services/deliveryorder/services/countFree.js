@@ -1,4 +1,4 @@
-const { DeliveryOrderModel } = require('arroyo-erp-models');
+const { DeliveryOrderModel } = require('carpinteria-erp-models');
 const orderByProvider = require('../../billing/utils/orderByProvider');
 
 const _countByMonthAndProvider = year => {

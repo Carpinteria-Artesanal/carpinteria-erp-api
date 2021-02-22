@@ -1,12 +1,11 @@
-const { ClientInvoiceModel } = require('arroyo-erp-models');
+const { ClientInvoiceModel } = require('carpinteria-erp-models');
 const roundNumber = require('../../../../utils/roundNumber');
 
 /**
  * Add product to delivery order
  * @param {String} id
- * @param {String} deliveryOrder
  * @param {String} name
- * @param {Number} weight
+ * @param {Number} iva
  * @param {Number} unit
  * @param {String} price
  * @return {Promise<void>}
@@ -14,26 +13,27 @@ const roundNumber = require('../../../../utils/roundNumber');
 const addProduct = ({
   params: {
     id,
-    deliveryOrder,
   },
   body: {
     name,
-    weight,
     unit,
+    iva,
     price,
   },
 }) => {
-  const total = roundNumber(weight * price);
+  const total = roundNumber(unit * price);
+  const ivaPercent = iva / 100;
+  const taxBase = roundNumber(total / (ivaPercent + 1));
   return ClientInvoiceModel.findOneAndUpdate({
     _id: id,
-    'deliveryOrders._id': deliveryOrder,
   }, {
     $push: {
-      'deliveryOrders.$.products': {
+      products: {
         name,
-        weight,
+        iva,
         unit,
         price,
+        taxBase,
         total,
       },
     },

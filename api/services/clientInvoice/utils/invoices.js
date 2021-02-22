@@ -1,7 +1,7 @@
 const {
   DeliveryOrderModel,
   ProviderModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 const {
   InvoiceNotFoundDeliveryOrder,
 } = require('../../../../errors/invoice.errors');

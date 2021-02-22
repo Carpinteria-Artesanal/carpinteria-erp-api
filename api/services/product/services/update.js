@@ -1,4 +1,4 @@
-const { ProductModel } = require('arroyo-erp-models');
+const { ProductModel } = require('carpinteria-erp-models');
 
 /**
  * Edit product

@@ -1,4 +1,4 @@
-const { ClientInvoiceModel } = require('arroyo-erp-models');
+const { ClientInvoiceModel } = require('carpinteria-erp-models');
 
 /**
  * Devuelve las facturas del cliente
@@ -11,7 +11,7 @@ const invoicesShort = async ({
   limit,
 }) => {
   const invoices = await ClientInvoiceModel.find({ client }, '_id nInvoice date total')
-    .sort({ date: -1 })
+    .sort({ nInvoice: -1 })
     .skip(Number(offset || 0))
     .limit(Number(limit))
     .lean();

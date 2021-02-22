@@ -1,7 +1,7 @@
 const {
   InvoiceModel,
   DeliveryOrderModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 
 const _updateInvoiceAndOrders = async (invoice, nOrder) => {
   if (invoice.deliveryOrders?.length) {

@@ -2,11 +2,10 @@
 const {
   ClientInvoiceModel,
   AutoIncrement,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 const {
   invoiceErrors,
   commonErrors,
-  deliveryOrderErrors,
 } = require('../../../errors');
 const { isNumber } = require('../../../utils');
 
@@ -65,7 +64,7 @@ const isRemovable = async ({ id }) => {
   const lastDocument = await AutoIncrement.findOne({ name: `clientInvoice${year}` });
   let lastNumber;
   if (invoice.nInvoice)
-    lastNumber = Number(invoice.nInvoice.split('-')[1]);
+    lastNumber = Number(invoice.nInvoice.split('/')[1]);
 
   // Si está confirmada y no es la última factura del año no se puede borrar
   if (invoice.nInvoice && lastDocument?.seq && lastNumber !== lastDocument?.seq)
@@ -82,35 +81,15 @@ const isValidDate = ({ body: { date } }) => {
     throw new commonErrors.DateNotValid();
 };
 
-const validateDeliveryOrder = async ({ deliveryOrder }) => {
-  const doExist = await ClientInvoiceModel.exists({ 'deliveryOrders._id': deliveryOrder });
-  if (!doExist) throw new deliveryOrderErrors.DeliveryOrderNotFound();
-};
-
-const validateDeliveryOrderParam = async ({ params }) => validateDeliveryOrder(params);
-
-const isDORemovable = async ({
-  id,
-  deliveryOrder,
-}) => {
-  const invoiceDO = await ClientInvoiceModel.findOne({
-    _id: id,
-    'deliveryOrders._id': deliveryOrder,
-  }, { 'deliveryOrders.$': 1 });
-
-  if (invoiceDO?.deliveryOrders?.[0]?.products?.length)
-    throw new deliveryOrderErrors.DeliveryOrderNoRemovable();
-};
-
 const validateProduct = ({
   body: {
     name,
-    weight,
+    iva,
     unit,
     price,
   },
 }) => {
-  if (!isNumber(weight) || !isNumber(price) || !name || !unit)
+  if (!isNumber(iva) || !isNumber(price) || !name || !isNumber(unit))
     throw new invoiceErrors.InvoiceParamsMissing();
 };
 
@@ -120,9 +99,6 @@ module.exports = {
   editBody,
   isRemovable,
   isValidDate,
-  validateDeliveryOrder,
-  isDORemovable,
-  validateDeliveryOrderParam,
   validateProduct,
   isValidForConfirmed,
 };

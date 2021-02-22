@@ -1,27 +1,14 @@
 const carbone = require('carbone');
-const { ClientInvoiceModel, ClientModel } = require('arroyo-erp-models');
+const { ClientInvoiceModel, ClientModel } = require('carpinteria-erp-models');
 const { formatDate } = require('../../../../utils');
 
 /* istanbul ignore next */
 const _productAdapter = product => ({
   descripcion: product.name,
-  peso: `${product.weight.toLocaleString('es-ES')} ${product.unit}`,
+  unidades: `${product.unit.toLocaleString('es-ES')}`,
   precio: `${product.price.toLocaleString('es-ES')} €`,
   importe: `${product.total.toLocaleString('es-ES')} €`,
 });
-
-/* istanbul ignore next */
-const _doAdapter = deliveryOrder => {
-  let rows = [];
-  if (deliveryOrder.date) rows.push({ fecha: formatDate(deliveryOrder.date) });
-
-  rows = [
-    ...rows,
-    ...deliveryOrder.products.map(_productAdapter),
-  ];
-
-  return rows;
-};
 
 /* istanbul ignore next */
 const _invoicesAdapter = invoice => ({
@@ -33,7 +20,7 @@ const _invoicesAdapter = invoice => ({
   cp: invoice.client.postalCode,
   provincia: invoice.client.province,
   cif: invoice.client.cif,
-  filas: invoice.deliveryOrders.map(_doAdapter).flat(),
+  filas: invoice.products.map(_productAdapter),
   base: invoice.taxBase,
   iva: invoice.iva,
   total: invoice.total,
@@ -53,7 +40,7 @@ const exportOds = async ({ id }) => {
   let bookFile = null;
   let error = null;
 
-  carbone.render('./templates/invoice-client.ods', invoice, {
+  carbone.render('./plantillas/factura.ods', invoice, {
     lang: 'es-es',
   }, (err, result) => {
     /* istanbul ignore next */

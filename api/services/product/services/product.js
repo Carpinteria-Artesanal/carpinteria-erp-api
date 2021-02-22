@@ -1,5 +1,5 @@
 /* eslint-disable nonblock-statement-body-position */
-const { PriceModel, ProductModel } = require('arroyo-erp-models');
+const { PriceModel, ProductModel } = require('carpinteria-erp-models');
 
 /**
  * Get dates and prices of the product

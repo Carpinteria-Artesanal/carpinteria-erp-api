@@ -1,6 +1,6 @@
 const {
   PriceChangeModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 
 const updatePrice = require('./services/updatePrice');
 const deletePrice = require('./services/deletePrice');

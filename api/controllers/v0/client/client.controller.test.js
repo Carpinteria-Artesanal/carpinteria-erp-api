@@ -1,5 +1,5 @@
 const supertest = require('supertest');
-const { mongoose, ClientModel } = require('arroyo-erp-models');
+const { mongoose, ClientModel } = require('carpinteria-erp-models');
 const testDB = require('../../../../test/test-db')(mongoose);
 const requestLogin = require('../../../../test/request-login');
 const app = require('../../../../index');

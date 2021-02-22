@@ -1,4 +1,4 @@
-const { ClientInvoiceModel } = require('arroyo-erp-models');
+const { ClientInvoiceModel } = require('carpinteria-erp-models');
 const roundNumber = require('../../../../utils/roundNumber');
 
 /**
@@ -7,27 +7,24 @@ const roundNumber = require('../../../../utils/roundNumber');
  * @returns {Promise<{invoice}|*>}
  */
 const refresh = invoice => {
-  let total = 0;
-  const deliveryOrders = invoice.deliveryOrders.map(deliveryOrder => {
-    const totalDO = deliveryOrder.products.reduce(
-      (accumulator, current) => accumulator + current.total,
-      0,
-    );
-    total += totalDO;
+  const totals = invoice.products.reduce(
+    ({
+      total,
+      taxBase,
+    }, current) => ({
+      total: total + current.total,
+      taxBase: taxBase + current.taxBase,
+    }),
+    {
+      taxBase: 0,
+      total: 0,
+    },
+  );
 
-    return {
-      _id: deliveryOrder._id,
-      date: deliveryOrder.date,
-      products: deliveryOrder.products,
-      total: totalDO,
-    };
-  });
-  total = roundNumber(total);
-
-  const taxBase = roundNumber(total / 1.1);
-  const iva = roundNumber(taxBase * 0.1);
+  const taxBase = roundNumber(totals.taxBase);
+  const total = roundNumber(totals.total);
+  const iva = roundNumber(total - taxBase);
   return ClientInvoiceModel.findOneAndUpdate({ _id: invoice._id }, {
-    deliveryOrders,
     total,
     iva,
     taxBase,

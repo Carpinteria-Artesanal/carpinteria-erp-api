@@ -4,7 +4,7 @@ const {
   ClientModel,
   ClientInvoiceModel,
   AutoIncrement,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 const testDB = require('../../../../test/test-db')(mongoose);
 const requestLogin = require('../../../../test/request-login');
 const app = require('../../../../index');
@@ -12,32 +12,26 @@ const {
   commonErrors,
   invoiceErrors,
   clientErrors,
-  deliveryOrderErrors,
 } = require('../../../../errors');
-const exportOds = require('../../../services/clientInvoice/services/export');
 
 jest.mock('../../../services/clientInvoice/services/export');
 
 const invoiceMock = {
-  taxBase: 200.73,
-  iva: 95.01,
-  total: 295.74,
+  iva: 1.14,
+  taxBase: 6.74,
+  total: 7.88,
   date: 1594474393373,
-  nInvoice: '20-22',
-  deliveryOrders: [
+  nInvoice: '2020/22',
+  products: [
     {
-      date: 1609439904890,
-      products: [
-        {
-          name: 'Producto',
-          weight: 112.2,
-          unit: 'Kg',
-          price: 1.23,
-          total: 198.23,
-        },
-      ],
+      // _id: "602abf56620cb4600ca73933",
+      name: 'Prueba',
+      iva: 17,
+      unit: 2,
+      price: 3.94,
+      taxBase: 6.74,
+      total: 7.88,
     },
-
   ],
 };
 
@@ -266,7 +260,7 @@ describe('ClientInvoicesController', () => {
 
           before(done => {
             supertest(app)
-              .get(`${PATH}?client=${client._id}&offset=1&limit=1`)
+              .get(`${PATH}?client=${client._id}&offset=0&limit=1`)
               .set('Authorization', `Bearer ${token}`)
               .end((err, res) => {
                 response = res;
@@ -528,23 +522,22 @@ describe('ClientInvoicesController', () => {
             .toBe(invoiceMock.nInvoice);
           expect(response.body.total)
             .toBe(invoiceMock.total);
-          // TODO
-          /* expect(response.body.taxBase)
+          expect(response.body.taxBase)
             .toBe(invoiceMock.taxBase);
           expect(response.body.iva)
-            .toBe(invoiceMock.iva); */
-          expect(response.body.deliveryOrders[0].date)
-            .toBe(invoiceMock.deliveryOrders[0].date);
-          expect(response.body.deliveryOrders[0].products[0].name)
-            .toBe(invoiceMock.deliveryOrders[0].products[0].name);
-          expect(response.body.deliveryOrders[0].products[0].weight)
-            .toBe(invoiceMock.deliveryOrders[0].products[0].weight);
-          expect(response.body.deliveryOrders[0].products[0].unit)
-            .toBe(invoiceMock.deliveryOrders[0].products[0].unit);
-          expect(response.body.deliveryOrders[0].products[0].price)
-            .toBe(invoiceMock.deliveryOrders[0].products[0].price);
-          expect(response.body.deliveryOrders[0].products[0].total)
-            .toBe(invoiceMock.deliveryOrders[0].products[0].total);
+            .toBe(invoiceMock.iva);
+          expect(response.body.products[0].name)
+            .toBe(invoiceMock.products[0].name);
+          expect(response.body.products[0].iva)
+            .toBe(invoiceMock.products[0].iva);
+          expect(response.body.products[0].unit)
+            .toBe(invoiceMock.products[0].unit);
+          expect(response.body.products[0].price)
+            .toBe(invoiceMock.products[0].price);
+          expect(response.body.products[0].taxBase)
+            .toBe(invoiceMock.products[0].taxBase);
+          expect(response.body.products[0].total)
+            .toBe(invoiceMock.products[0].total);
         });
       });
     });
@@ -1060,16 +1053,17 @@ describe('ClientInvoicesController', () => {
 
         test('Devuelve un número de factura', () => {
           const nextNum = num + 1;
-          const numInvoice = nextNum < 10 ? `0${nextNum}` : nextNum;
+          let numInvoice = nextNum < 10 ? `0${nextNum}` : nextNum;
+          numInvoice = nextNum < 100 ? `0${numInvoice}` : nextNum;
           expect(response.body.nInvoice)
-            .toBe(`20-${numInvoice}`);
+            .toBe(`2020/${numInvoice}`);
         });
       });
     });
   });
 
-  describe('POST /client/invoices/:id/deliveryOrder', () => {
-    const PATH = id => `/client/invoices/${id}/deliveryOrder`;
+  describe('POST /client/invoices/:id/products', () => {
+    const PATH = id => `/client/invoices/${id}/product`;
     describe('Usuario no autenticado', () => {
       let response;
 
@@ -1133,530 +1127,22 @@ describe('ClientInvoicesController', () => {
         });
       });
 
-      describe('Añade un albarán', () => {
-        let response;
-        let invoice;
-
-        before(() => ClientInvoiceModel.create({
-          date: Date.now(),
-        })
-          .then(invoiceCreated => {
-            invoice = invoiceCreated;
-          }));
-
-        beforeAll(done => {
-          supertest(app)
-            .post(PATH(invoice._id))
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              response = res;
-              done();
-            });
-        });
-
-        test('Debería dar un 200', () => {
-          expect(token)
-            .toBeTruthy();
-          expect(response.status)
-            .toBe(200);
-        });
-
-        test('Contiene un albarán nuevo', () => {
-          const deliveryOrder = response.body.deliveryOrders.pop();
-          expect(deliveryOrder.date)
-            .toBeNull();
-          expect(deliveryOrder.total)
-            .toBe(0);
-          expect(deliveryOrder.products.length)
-            .toBe(0);
-        });
-      });
-    });
-  });
-
-  describe('PATCH /client/invoices/:id/deliveryOrder/:order', () => {
-    const PATH = (id, order) => `/client/invoices/${id}/deliveryOrder/${order}`;
-    describe('Usuario no autenticado', () => {
-      let response;
-
-      beforeAll(done => {
-        supertest(app)
-          .patch(PATH('5ef26172ccfd9d1541b870be', '5ef26172ccfd9d1541b870be'))
-          .end((err, res) => {
-            response = res;
-            done();
-          });
-      });
-
-      test('Debería dar un 401', () => {
-        expect(response.statusCode)
-          .toBe(401);
-      });
-    });
-
-    describe('Usuario autenticado', () => {
-      let token;
-      before(done => {
-        requestLogin()
-          .then(res => {
-            token = res;
-            done();
-          });
-      });
-
-      test('Se ha autenticado el usuario', () => {
-        expect(token)
-          .toBeTruthy();
-      });
-
-      describe('La factura no existe', () => {
-        let response;
-
-        beforeAll(done => {
-          supertest(app)
-            .patch(PATH('5f761ae5a7d8986bc28ff7f4', '5ef26172ccfd9d1541b870be'))
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              response = res;
-              done();
-            });
-        });
-
-        test('Debería dar un 404', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.statusCode)
-            .toBe(404);
-        });
-
-        test('El mensaje de error es correcto', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.body.message)
-            .toBe(new invoiceErrors.InvoiceIdNotFound().message);
-        });
-      });
-
-      describe('El albarán no existe', () => {
-        let response;
-        let invoice;
-
-        before(() => ClientInvoiceModel.create({
-          date: Date.now(),
-        })
-          .then(invoiceCreated => {
-            invoice = invoiceCreated;
-          }));
-
-        beforeAll(done => {
-          supertest(app)
-            .patch(PATH(invoice._id, '5ef26172ccfd9d1541b870be'))
-            .send()
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              response = res;
-              done();
-            });
-        });
-
-        test('Debería dar un 404', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.statusCode)
-            .toBe(404);
-        });
-
-        test('El mensaje de error es correcto', () => {
-          expect(response.body.message)
-            .toBe(new deliveryOrderErrors.DeliveryOrderNotFound().message);
-        });
-      });
-
-      describe('La fecha es inválida', () => {
-        let response;
-        let invoice;
-
-        before(() => ClientInvoiceModel.create({
-          date: Date.now(),
-          deliveryOrders: [{
-            date: null,
-            total: 0,
-            products: [],
-          }],
-        })
-          .then(invoiceCreated => {
-            invoice = invoiceCreated;
-          }));
-
-        beforeAll(done => {
-          supertest(app)
-            .patch(PATH(invoice._id, invoice.deliveryOrders[0]._id))
-            .send()
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              response = res;
-              done();
-            });
-        });
-
-        test('Debería dar un 400', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.status)
-            .toBe(400);
-        });
-
-        test('El mensaje de error es correcto', () => {
-          expect(response.body.message)
-            .toBe(new commonErrors.DateNotValid().message);
-        });
-      });
-
-      describe('Se actualiza la fecha', () => {
-        let invoice;
-        let response;
-
-        before(() => ClientInvoiceModel.create({
-          date: Date.now(),
-          deliveryOrders: [{
-            date: null,
-            total: 0,
-            products: [],
-          }],
-        })
-          .then(invoiceCreated => {
-            invoice = invoiceCreated;
-          }));
-
-        beforeAll(done => {
-          supertest(app)
-            .patch(PATH(invoice._id, invoice.deliveryOrders[0]._id))
-            .send({ date: 1609676354374 })
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              response = res;
-              done();
-            });
-        });
-
-        test('Debería dar un 204', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.statusCode)
-            .toBe(204);
-        });
-      });
-    });
-  });
-
-  describe('DELETE /client/invoices/:id/deliveryOrder/:order', () => {
-    const PATH = (id, order) => `/client/invoices/${id}/deliveryOrder/${order}`;
-    describe('Usuario no autenticado', () => {
-      let response;
-
-      beforeAll(done => {
-        supertest(app)
-          .delete(PATH('5ef26172ccfd9d1541b870be', '5ef26172ccfd9d1541b870be'))
-          .end((err, res) => {
-            response = res;
-            done();
-          });
-      });
-
-      test('Debería dar un 401', () => {
-        expect(response.statusCode)
-          .toBe(401);
-      });
-    });
-
-    describe('Usuario autenticado', () => {
-      let token;
-      before(done => {
-        requestLogin()
-          .then(res => {
-            token = res;
-            done();
-          });
-      });
-
-      test('Se ha autenticado el usuario', () => {
-        expect(token)
-          .toBeTruthy();
-      });
-
-      describe('La factura no existe', () => {
-        let response;
-
-        beforeAll(done => {
-          supertest(app)
-            .delete(PATH('5f761ae5a7d8986bc28ff7f4', '5ef26172ccfd9d1541b870be'))
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              response = res;
-              done();
-            });
-        });
-
-        test('Debería dar un 404', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.statusCode)
-            .toBe(404);
-        });
-
-        test('El mensaje de error es correcto', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.body.message)
-            .toBe(new invoiceErrors.InvoiceIdNotFound().message);
-        });
-      });
-
-      describe('El albarán no existe', () => {
-        let response;
-        let invoice;
-
-        before(() => ClientInvoiceModel.create({
-          date: Date.now(),
-        })
-          .then(invoiceCreated => {
-            invoice = invoiceCreated;
-          }));
-
-        beforeAll(done => {
-          supertest(app)
-            .delete(PATH(invoice._id, '5ef26172ccfd9d1541b870be'))
-            .send()
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              response = res;
-              done();
-            });
-        });
-
-        test('Debería dar un 404', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.statusCode)
-            .toBe(404);
-        });
-
-        test('El mensaje de error es correcto', () => {
-          expect(response.body.message)
-            .toBe(new deliveryOrderErrors.DeliveryOrderNotFound().message);
-        });
-      });
-
-      describe('El albarán tiene productos', () => {
-        let response;
-        let invoice;
-
-        before(() => ClientInvoiceModel.create({
-          date: Date.now(),
-          deliveryOrders: [{
-            date: null,
-            total: 0,
-            products: [{
-              unit: 'kg',
-              total: 10,
-            }],
-          }],
-        })
-          .then(invoiceCreated => {
-            invoice = invoiceCreated;
-          }));
-
-        beforeAll(done => {
-          supertest(app)
-            .delete(PATH(invoice._id, invoice.deliveryOrders[0]._id))
-            .send()
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              response = res;
-              done();
-            });
-        });
-
-        test('Debería dar un 400', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.status)
-            .toBe(400);
-        });
-
-        test('El mensaje de error es correcto', () => {
-          expect(response.body.message)
-            .toBe(new deliveryOrderErrors.DeliveryOrderNoRemovable().message);
-        });
-      });
-
-      describe('Se borra el albarán', () => {
-        let invoice;
-        let response;
-
-        before(() => ClientInvoiceModel.create({
-          date: Date.now(),
-          deliveryOrders: [{
-            date: null,
-            total: 0,
-            products: [],
-          }],
-        })
-          .then(invoiceCreated => {
-            invoice = invoiceCreated;
-          }));
-
-        beforeAll(done => {
-          supertest(app)
-            .delete(PATH(invoice._id, invoice.deliveryOrders[0]._id))
-            .send({ date: 1609676354374 })
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              response = res;
-              done();
-            });
-        });
-
-        test('Debería dar un 204', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.statusCode)
-            .toBe(204);
-        });
-      });
-    });
-  });
-
-  describe('POST /client/invoices/:id/deliveryOrder/:order/products', () => {
-    const PATH = (id, order) => `/client/invoices/${id}/deliveryOrder/${order}/product`;
-    describe('Usuario no autenticado', () => {
-      let response;
-
-      beforeAll(done => {
-        supertest(app)
-          .post(PATH('5ef26172ccfd9d1541b870be', '5ef26172ccfd9d1541b870be'))
-          .end((err, res) => {
-            response = res;
-            done();
-          });
-      });
-
-      test('Debería dar un 401', () => {
-        expect(response.statusCode)
-          .toBe(401);
-      });
-    });
-
-    describe('Usuario autenticado', () => {
-      let token;
-      before(done => {
-        requestLogin()
-          .then(res => {
-            token = res;
-            done();
-          });
-      });
-
-      test('Se ha autenticado el usuario', () => {
-        expect(token)
-          .toBeTruthy();
-      });
-
-      describe('La factura no existe', () => {
-        let response;
-
-        beforeAll(done => {
-          supertest(app)
-            .post(PATH('5f761ae5a7d8986bc28ff7f4', '5ef26172ccfd9d1541b870be'))
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              response = res;
-              done();
-            });
-        });
-
-        test('Debería dar un 404', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.statusCode)
-            .toBe(404);
-        });
-
-        test('El mensaje de error es correcto', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.body.message)
-            .toBe(new invoiceErrors.InvoiceIdNotFound().message);
-        });
-      });
-
-      describe('El albarán no existe', () => {
-        let response;
-        let invoice;
-
-        before(() => ClientInvoiceModel.create({
-          date: Date.now(),
-        })
-          .then(invoiceCreated => {
-            invoice = invoiceCreated;
-          }));
-
-        beforeAll(done => {
-          supertest(app)
-            .post(PATH(invoice._id, '5ef26172ccfd9d1541b870be'))
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              response = res;
-              done();
-            });
-        });
-
-        test('Debería dar un 404', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.statusCode)
-            .toBe(404);
-        });
-
-        test('El mensaje de error es correcto', () => {
-          expect(response.body.message)
-            .toBe(new deliveryOrderErrors.DeliveryOrderNotFound().message);
-        });
-      });
-
       describe.each([
-        'unit', 'name', 'price', 'weight',
+        'name', 'unit', 'iva', 'price',
       ])('No se envía %s', (item => {
         let response;
         let invoice;
         const productMock = {
-          unit: 'Kg',
-          name: 'Producto',
-          price: 2.34,
-          weight: 3.43,
+          name: 'Prueba',
+          unit: 2,
+          iva: 17,
+          price: 3.94,
         };
 
         before(async () => {
           await ClientInvoiceModel.create({
             date: Date.now(),
-            deliveryOrders: [{
-              date: null,
-              total: 0,
-              products: [],
-            }],
+            products: [],
           })
             .then(invoiceCreated => {
               invoice = invoiceCreated;
@@ -1666,7 +1152,7 @@ describe('ClientInvoicesController', () => {
         beforeAll(done => {
           delete productMock[item];
           supertest(app)
-            .post(PATH(invoice._id, invoice.deliveryOrders[0]._id))
+            .post(PATH(invoice._id))
             .send(productMock)
             .set('Authorization', `Bearer ${token}`)
             .end((err, res) => {
@@ -1693,19 +1179,16 @@ describe('ClientInvoicesController', () => {
         let invoice;
         let response;
         const productMock = {
-          unit: 'Kg',
-          name: 'Producto',
-          price: 2.34,
-          weight: 3.43,
+          name: 'Prueba',
+          unit: 2,
+          iva: 17,
+          price: 3.94,
         };
 
         before(() => ClientInvoiceModel.create({
           date: Date.now(),
-          deliveryOrders: [{
-            date: null,
-            total: 0,
-            products: [],
-          }],
+          total: 0,
+          products: [],
         })
           .then(invoiceCreated => {
             invoice = invoiceCreated;
@@ -1713,7 +1196,7 @@ describe('ClientInvoicesController', () => {
 
         beforeAll(done => {
           supertest(app)
-            .post(PATH(invoice._id, invoice.deliveryOrders[0]._id))
+            .post(PATH(invoice._id))
             .send(productMock)
             .set('Authorization', `Bearer ${token}`)
             .end((err, res) => {
@@ -1731,22 +1214,28 @@ describe('ClientInvoicesController', () => {
         });
 
         test('El producto se ha añadido', () => {
-          const product = response.body.deliveryOrders[0].products[0];
+          const product = response.body.products[0];
           expect(product.name)
             .toBe(productMock.name);
           expect(product.unit)
             .toBe(productMock.unit);
           expect(product.price)
             .toBe(productMock.price);
-          expect(product.weight)
-            .toBe(productMock.weight);
+          expect(product.iva)
+            .toBe(productMock.iva);
+          expect(product.taxBase)
+            .toBe(6.74);
+          expect(product.total)
+            .toBe(7.88);
+          expect(response.body.iva)
+            .toBe(1.14);
         });
       });
     });
   });
 
-  describe('PATCH /client/invoices/:id/deliveryOrder/:order/product/:product', () => {
-    const PATH = (id, order, product) => `/client/invoices/${id}/deliveryOrder/${order}/product/${product}`;
+  describe('PATCH /client/invoices/:id/product/:product', () => {
+    const PATH = (id, product) => `/client/invoices/${id}/product/${product}`;
     describe('Usuario no autenticado', () => {
       let response;
 
@@ -1785,7 +1274,7 @@ describe('ClientInvoicesController', () => {
 
         beforeAll(done => {
           supertest(app)
-            .patch(PATH('5f761ae5a7d8986bc28ff7f4', '5ef26172ccfd9d1541b870be', '5f761ae5a7d8986bc28ff7f4'))
+            .patch(PATH('5f761ae5a7d8986bc28ff7f4', '5f761ae5a7d8986bc28ff7f4'))
             .set('Authorization', `Bearer ${token}`)
             .end((err, res) => {
               response = res;
@@ -1810,65 +1299,27 @@ describe('ClientInvoicesController', () => {
         });
       });
 
-      describe('El albarán no existe', () => {
-        let response;
-        let invoice;
-
-        before(() => ClientInvoiceModel.create({
-          date: Date.now(),
-        })
-          .then(invoiceCreated => {
-            invoice = invoiceCreated;
-          }));
-
-        beforeAll(done => {
-          supertest(app)
-            .patch(PATH(invoice._id, '5ef26172ccfd9d1541b870be', '5f761ae5a7d8986bc28ff7f4'))
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              response = res;
-              done();
-            });
-        });
-
-        test('Debería dar un 404', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.statusCode)
-            .toBe(404);
-        });
-
-        test('El mensaje de error es correcto', () => {
-          expect(response.body.message)
-            .toBe(new deliveryOrderErrors.DeliveryOrderNotFound().message);
-        });
-      });
-
       describe.each([
-        'unit', 'name', 'price', 'weight',
+        'unit', 'name', 'price', 'iva',
       ])('No se envía %s', (item => {
         let response;
         let invoice;
         const productMock = {
-          unit: 'Kg',
-          name: 'Producto',
-          price: 2.34,
-          weight: 3.43,
+          name: 'Prueba',
+          unit: 2,
+          iva: 17,
+          price: 3.94,
         };
 
         before(async () => {
           await ClientInvoiceModel.create({
             date: Date.now(),
-            deliveryOrders: [{
-              date: null,
-              total: 0,
-              products: [{
-                unit: 'unid',
-                name: 'Producto 2',
-                price: 3.77,
-                weight: 1.11,
-              }],
+            total: 0,
+            products: [{
+              unit: 2,
+              name: 'Producto 2',
+              price: 3.77,
+              iva: 1.11,
             }],
           })
             .then(invoiceCreated => {
@@ -1881,8 +1332,7 @@ describe('ClientInvoicesController', () => {
           supertest(app)
             .patch(PATH(
               invoice._id,
-              invoice.deliveryOrders[0]._id,
-              invoice.deliveryOrders[0].products[0]._id,
+              invoice.products[0]._id,
             ))
             .send(productMock)
             .set('Authorization', `Bearer ${token}`)
@@ -1910,23 +1360,19 @@ describe('ClientInvoicesController', () => {
         let invoice;
         let response;
         const productMock = {
-          unit: 'Kg',
+          unit: 2,
           name: 'Producto',
           price: 2.34,
-          weight: 3.43,
+          iva: 3.43,
         };
 
         before(() => ClientInvoiceModel.create({
           date: Date.now(),
-          deliveryOrders: [{
-            date: null,
-            total: 0,
-            products: [{
-              unit: 'unid',
-              name: 'Producto 2',
-              price: 3.77,
-              weight: 1.11,
-            }],
+          products: [{
+            unit: 2,
+            name: 'Producto 2',
+            price: 3.77,
+            iva: 1.11,
           }],
         })
           .then(invoiceCreated => {
@@ -1937,8 +1383,7 @@ describe('ClientInvoicesController', () => {
           supertest(app)
             .patch(PATH(
               invoice._id,
-              invoice.deliveryOrders[0]._id,
-              invoice.deliveryOrders[0].products[0]._id,
+              invoice.products[0]._id,
             ))
             .send(productMock)
             .set('Authorization', `Bearer ${token}`)
@@ -1957,7 +1402,7 @@ describe('ClientInvoicesController', () => {
         });
 
         test('El producto se ha añadido', () => {
-          const product = response.body.deliveryOrders[0].products[0];
+          const product = response.body.products[0];
           expect(product.name)
             .toBe(productMock.name);
           expect(product.unit)
@@ -1971,8 +1416,8 @@ describe('ClientInvoicesController', () => {
     });
   });
 
-  describe('DELETE /client/invoices/:id/deliveryOrder/:order/product/:product', () => {
-    const PATH = (id, order, product) => `/client/invoices/${id}/deliveryOrder/${order}/product/${product}`;
+  describe('DELETE /client/invoices/:id/product/:product', () => {
+    const PATH = (id, product) => `/client/invoices/${id}/product/${product}`;
     describe('Usuario no autenticado', () => {
       let response;
 
@@ -2011,7 +1456,7 @@ describe('ClientInvoicesController', () => {
 
         beforeAll(done => {
           supertest(app)
-            .delete(PATH('5f761ae5a7d8986bc28ff7f4', '5ef26172ccfd9d1541b870be', '5f761ae5a7d8986bc28ff7f4'))
+            .delete(PATH('5f761ae5a7d8986bc28ff7f4', '5f761ae5a7d8986bc28ff7f4'))
             .set('Authorization', `Bearer ${token}`)
             .end((err, res) => {
               response = res;
@@ -2036,56 +1481,17 @@ describe('ClientInvoicesController', () => {
         });
       });
 
-      describe('El albarán no existe', () => {
-        let response;
-        let invoice;
-
-        before(() => ClientInvoiceModel.create({
-          date: Date.now(),
-        })
-          .then(invoiceCreated => {
-            invoice = invoiceCreated;
-          }));
-
-        beforeAll(done => {
-          supertest(app)
-            .delete(PATH(invoice._id, '5ef26172ccfd9d1541b870be', '5f761ae5a7d8986bc28ff7f4'))
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-              response = res;
-              done();
-            });
-        });
-
-        test('Debería dar un 404', () => {
-          expect(token)
-            .toBeTruthy();
-
-          expect(response.statusCode)
-            .toBe(404);
-        });
-
-        test('El mensaje de error es correcto', () => {
-          expect(response.body.message)
-            .toBe(new deliveryOrderErrors.DeliveryOrderNotFound().message);
-        });
-      });
-
       describe('Elimina un producto', () => {
         let invoice;
         let response;
 
         before(() => ClientInvoiceModel.create({
           date: Date.now(),
-          deliveryOrders: [{
-            date: null,
-            total: 0,
-            products: [{
-              unit: 'unid',
-              name: 'Producto 2',
-              price: 3.77,
-              weight: 1.11,
-            }],
+          products: [{
+            unit: 1,
+            name: 'Producto 2',
+            price: 3.77,
+            iva: 1.11,
           }],
         })
           .then(invoiceCreated => {
@@ -2096,8 +1502,7 @@ describe('ClientInvoicesController', () => {
           supertest(app)
             .delete(PATH(
               invoice._id,
-              invoice.deliveryOrders[0]._id,
-              invoice.deliveryOrders[0].products[0]._id,
+              invoice.products[0]._id,
             ))
             .set('Authorization', `Bearer ${token}`)
             .end((err, res) => {
@@ -2115,7 +1520,7 @@ describe('ClientInvoicesController', () => {
         });
 
         test('El producto se ha añadido', () => {
-          const products = response.body.deliveryOrders[0].products.length;
+          const products = response.body.products.length;
           expect(products)
             .toBe(0);
         });

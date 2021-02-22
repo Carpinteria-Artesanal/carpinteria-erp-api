@@ -3,7 +3,7 @@ const {
   PriceModel,
   ProductModel,
   PriceChangeModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 
 const LogService = require('../../log.service');
 

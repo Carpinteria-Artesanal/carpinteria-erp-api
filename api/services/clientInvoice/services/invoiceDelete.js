@@ -1,6 +1,6 @@
 const {
   ClientInvoiceModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 
 /**
  * Delete invoice

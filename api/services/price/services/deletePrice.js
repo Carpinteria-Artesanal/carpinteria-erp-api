@@ -3,7 +3,7 @@ const {
   PriceModel,
   ProductModel,
   DeliveryOrderModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 
 const deletePrice = async ({
   id,

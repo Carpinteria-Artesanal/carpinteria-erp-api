@@ -1,7 +1,7 @@
 /* eslint-disable camelcase, nonblock-statement-body-position */
 const {
   PriceChangeModel,
-} = require('arroyo-erp-models');
+} = require('carpinteria-erp-models');
 const { priceChangeErrors } = require('../../../errors');
 
 /**

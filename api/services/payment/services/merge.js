@@ -1,5 +1,5 @@
 /* eslint-disable nonblock-statement-body-position */
-const { PaymentModel } = require('arroyo-erp-models');
+const { PaymentModel } = require('carpinteria-erp-models');
 const { roundNumber } = require('../../../../utils');
 
 /**

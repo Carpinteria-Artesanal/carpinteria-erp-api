@@ -1,4 +1,4 @@
-const { ClientInvoiceModel } = require('arroyo-erp-models');
+const { ClientInvoiceModel } = require('carpinteria-erp-models');
 
 /**
  * Modifica la factura de cliente
@@ -14,6 +14,7 @@ const clientInvoiceEdit = ({
     totals,
   },
 }) => {
+  // TODO add payments
   const newData = {
     ...(date && { date }),
     ...(totals && {
