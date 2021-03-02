@@ -1,7 +1,6 @@
 const { ProviderModel } = require('carpinteria-erp-models');
 const { providerErrors, commonErrors } = require('../../../errors');
 const { isEmptyObject } = require('../../../utils');
-const { TYPE_PROVIDER_LIST } = require('../../../constants');
 
 /**
  * Check if exist id
@@ -29,26 +28,17 @@ const validateProvider = ({ provider }) => provider && _checkId(provider);
  * @param {string} address
  * @param {string} city
  * @param {string} type
- * @param {boolean} hasCanal
  * @param {Object} others
  * @param {Boolean} noHaveType - Indica si puede incluir type
  */
 const fieldsValid = ({
   name, address, city, postalCode, province, phone, email, businessName, cif,
-  _id, note, type, hasCanal, ...others
-}, noHaveType = false) => {
+  _id, note, ...others
+}) => {
   if (!name) throw new providerErrors.ProviderMissingName();
-  if (!isEmptyObject(others) || (noHaveType && type)) throw new commonErrors.ParamNotValidError();
+  if (!isEmptyObject(others)) throw new commonErrors.ParamNotValidError();
 };
-const fieldsValidBody = ({ body }) => fieldsValid(body, true);
-
-/**
- * Valida el tipo de proveedor
- * @param {string} type
- */
-const validateType = ({ type }) => {
-  if (!TYPE_PROVIDER_LIST.includes(type)) throw new providerErrors.ProviderTypeNotValid();
-};
+const fieldsValidBody = ({ body }) => fieldsValid(body);
 
 module.exports = {
   validateIdParam,
@@ -57,5 +47,4 @@ module.exports = {
   validateProvider,
   fieldsValid,
   fieldsValidBody,
-  validateType,
 };
