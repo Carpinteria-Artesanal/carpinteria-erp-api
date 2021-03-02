@@ -10,6 +10,12 @@ const config = {
     port: ['27017'],
     host: [process.env.DATABASE_HOST || '127.0.0.1'],
     dataBaseName: process.env.DATABASE_NAME || 'carpinteria',
+    options: {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true,
+    },
   },
 };
 

@@ -1,16 +1,14 @@
 const { ProviderModel } = require('carpinteria-erp-models');
 
 const provider = require('./services/provider');
-const { TYPES_STANDARD_PROVIDER } = require('../../../constants');
 
 /**
  * Return all providers
  * @return {Promise<{data: any}>}
  */
-const providers = ({ name, type }) => {
+const providers = ({ name }) => {
   const filter = {
     ...(name && { name: { $regex: name } }),
-    type: type === 'standard' ? TYPES_STANDARD_PROVIDER : type,
   };
 
   return ProviderModel.find(filter, 'name _id note')

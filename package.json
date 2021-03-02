@@ -25,7 +25,7 @@
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "carbone": "^2.1.1",
-    "carpinteria-erp-models": "^0.1.1",
+    "carpinteria-erp-models": "^0.1.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "helmet": "^4.4.1",

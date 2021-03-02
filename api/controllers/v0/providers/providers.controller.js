@@ -21,9 +21,6 @@ class ProvidersController {
     switch (error.name) {
     case 'ProviderMissingName':
     case 'ParamNotValidError':
-    case 'ProviderTypeNotValid':
-      this.errorHandler.sendBadRequest(res)(error);
-      break;
     case 'ProviderIdNotFound':
       this.errorHandler.sendNotFound(res)(error);
       break;
@@ -52,7 +49,6 @@ class ProvidersController {
     logService.logInfo('[providers] - Create provider');
     Promise.resolve(req.body)
       .tap(this.providerValidator.fieldsValid)
-      .tap(this.providerValidator.validateType)
       .then(this.providerService.create)
       .then(() => res.status(201)
         .send())
