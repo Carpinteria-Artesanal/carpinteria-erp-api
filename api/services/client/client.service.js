@@ -5,7 +5,7 @@ const ClientInvoiceService = require('../clientInvoice');
  * Return all providers
  * @return {Promise<{data: any}>}
  */
-const clients = () => ClientModel.find({}, 'name _id note')
+const clients = () => ClientModel.find({}, 'name _id address phone email')
   .collation({ locale: 'es' })
   .sort({ name: 1 })
   .lean();

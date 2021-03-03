@@ -129,6 +129,12 @@ describe('ClientController', () => {
               .toEqual(JSON.stringify(client._id));
             expect(json.name)
               .toBe(client.name);
+            expect(json.address)
+              .toBe(client.address);
+            expect(json.phone)
+              .toBe(client.phone);
+            expect(json.email)
+              .toBe(client.email);
           });
         });
       });

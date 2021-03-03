@@ -1672,16 +1672,9 @@ describe('InvoicesController', () => {
       describe('Asigna el número de orden y contiene albaranes', () => {
         let response;
         let invoice;
-        let deliveryOrder;
-
-        before(() => DeliveryOrderModel.create(deliveryOrderMock)
-          .then(created => {
-            deliveryOrder = created;
-          }));
 
         before(() => InvoiceModel.create({
           dateInvoice: Date.now(),
-          deliveryOrders: [deliveryOrder],
           total: 10,
         })
           .then(invoiceCreated => {
@@ -1980,11 +1973,7 @@ describe('InvoicesController', () => {
         let invoiceB;
 
         beforeAll(async () => {
-          const deliveryOrder = await DeliveryOrderModel.create(deliveryOrderMock);
-          await InvoiceModel.create({
-            ...invoiceMock,
-            deliveryOrders: [deliveryOrder._id],
-          })
+          await InvoiceModel.create(invoiceMock)
             .then(created => {
               invoiceA = created;
             });
