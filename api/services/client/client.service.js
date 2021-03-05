@@ -5,10 +5,27 @@ const ClientInvoiceService = require('../clientInvoice');
  * Return all providers
  * @return {Promise<{data: any}>}
  */
-const clients = () => ClientModel.find({}, 'name _id address phone email')
-  .collation({ locale: 'es' })
-  .sort({ name: 1 })
-  .lean();
+const clients = ({
+  name,
+  phone,
+  email,
+}) => {
+  const filter = {
+    ...(name && {
+      name: {
+        $regex: name,
+        $options: 'i',
+      },
+    }),
+    ...(phone && { phone: { $regex: phone } }),
+    ...(email && { email: { $regex: email } }),
+  };
+
+  return ClientModel.find(filter, 'name _id address phone email')
+    .collation({ locale: 'es' })
+    .sort({ name: 1 })
+    .lean();
+};
 
 /**
  * Create product
