@@ -1,35 +1,15 @@
-const { DeliveryOrderModel } = require('carpinteria-erp-models');
-const {
-  calcData,
-} = require('../utils');
+const { ClientInvoiceModel } = require('carpinteria-erp-models');
 
 /**
- * Delete element from products array
- * @param {Object} deliveryOrder
- * @param {Number} index
- * @returns {Object}
- * @private
+ * Delete product of delivery order in invoice
+ * @param {Object} data
  */
-const _deleteProduct = (deliveryOrder, index) => {
-  const products = deliveryOrder.products.slice();
-  products.splice(index, 1);
-  deliveryOrder.set('products', products);
-
-  return deliveryOrder;
-};
-
-/**
- * Elimina un producto del albarán
- * @param {String} id
- * @param {number} index
- * @return {Promise<void>}
- */
-const deleteProduct = ({
-  id, index,
-}) => (
-  DeliveryOrderModel.findOne({ _id: id })
-    .then(response => _deleteProduct(response, index))
-    .then(calcData)
-);
+const deleteProduct = async ({
+  id,
+  product,
+}) => ClientInvoiceModel.findOneAndUpdate({
+  _id: id,
+}, { $pull: { products: { _id: product } } },
+{ new: true });
 
 module.exports = deleteProduct;

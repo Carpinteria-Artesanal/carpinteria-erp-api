@@ -1,65 +1,25 @@
 const { DeliveryOrderModel } = require('carpinteria-erp-models');
 
 /**
- * Devuelve los albaranes no incluidos en una factura
- * @param {String} provider
- * @param {String} client
- * @returns {Array}
- * @private
+ * Get all client invoices
+ * @param {String} year
+ * @returns {Promise<*>}
  */
-const _getFree = ({ provider, client }) => DeliveryOrderModel.find({
-  provider,
-  client,
-  invoice: { $exists: false },
-})
-  .sort({ date: 1 });
+const orders = ({
+  year,
+}) => {
+  const start = new Date(year);
+  const nextYear = Number(year) + 1;
+  const end = new Date(nextYear.toString());
 
-/**
- * Devulve los albaranes incluidos en una factura
- * @param {String} provider
- * @param {String} offset
- * @param {String} limit
- * @param {String} client
- * @returns {Array}
- * @private
- */
-const _getInInvoices = ({
-  provider, client, offset, limit,
-}) => (
-  DeliveryOrderModel.find({
-    provider,
-    client,
-    invoice: { $exists: true },
-  })
+  return DeliveryOrderModel.find({
+    date: {
+      $gte: start,
+      $lt: end,
+    },
+  }, '_id nameClient total date nOrder')
     .sort({ date: -1 })
-    .skip(parseInt(offset, 10))
-    .limit(parseInt(limit, 10))
-);
-
-/**
- * Devuelve el número de albaren incluidos en facturas
- * @param {String} provider
- * @param {String} client
- * @returns {Number}
- * @private
- */
-const _countInInvoices = ({ provider, client }) => (
-  DeliveryOrderModel.find({
-    provider,
-    client,
-    invoice: { $exists: true },
-  })
-    .countDocuments()
-);
-
-/**
- * Return all delivery orders
- * @return {Promise<{free: Array, inInvoice: Array, inInvoiceCount: Number}>}
- */
-const orders = async data => ({
-  free: await _getFree(data),
-  inInvoices: await _getInInvoices(data),
-  inInvoiceCount: await _countInInvoices(data),
-});
+    .lean();
+};
 
 module.exports = orders;

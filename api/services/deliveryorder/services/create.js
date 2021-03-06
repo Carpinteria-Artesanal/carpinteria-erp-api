@@ -1,21 +1,22 @@
-const { DeliveryOrderModel, ProviderModel } = require('carpinteria-erp-models');
-const { INITIAL_SCHEMA } = require('../constants');
+const {
+  DeliveryOrderModel,
+  ClientModel,
+} = require('carpinteria-erp-models');
 
 /**
- * Create product
- * @param {string} provider
+ * Create invoice for client
+ * @param {String} clientId
  */
-const create = async ({ provider }) => {
-  const { name, hasCanal } = await ProviderModel.findOne({ _id: provider });
+const create = async ({ client }) => {
+  const clientData = await ClientModel.findOne({ _id: client });
+  const newInvoice = await new DeliveryOrderModel({
+    client,
+    nameClient: clientData.name,
+  }).save();
 
-  const data = {
-    provider,
-    nameProvider: name,
-    ...(hasCanal && { hasCanal }),
-    ...INITIAL_SCHEMA,
+  return {
+    id: newInvoice._id,
   };
-
-  return new DeliveryOrderModel(data).save();
 };
 
 module.exports = create;

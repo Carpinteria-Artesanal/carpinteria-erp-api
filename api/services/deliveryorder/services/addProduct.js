@@ -1,56 +1,43 @@
-const { DeliveryOrderModel } = require('carpinteria-erp-models');
-const {
-  calcData,
-  calcProduct,
-} = require('../utils');
+const { ClientInvoiceModel } = require('carpinteria-erp-models');
+const roundNumber = require('../../../../utils/roundNumber');
 
-/**
- * Añade un nuevo producto al objecto del albarán
- * @param {Object} deliveryOrder
- * @param {Object} product
- * @returns {Object}
- */
-const _mergeProduct = (deliveryOrder, product) => {
-  deliveryOrder.set('products', [
-    ...deliveryOrder.products,
-    product,
-  ]);
-
-  return deliveryOrder;
-};
 /**
  * Add product to delivery order
  * @param {String} id
- * @param {String} product
- * @param {Number} price
- * @param {Number} quantity
- * @param {String} canal
+ * @param {String} name
+ * @param {Number} iva
+ * @param {Number} unit
+ * @param {String} price
  * @return {Promise<void>}
  */
 const addProduct = ({
-  params: { id },
-  body: {
-    product,
-    price,
-    quantity,
-    canal,
+  params: {
+    id,
   },
-}) => (
-  DeliveryOrderModel.findOne({ _id: id })
-    .then(async response => {
-      const newProduct = await calcProduct({
-        product,
+  body: {
+    name,
+    unit,
+    iva,
+    price,
+  },
+}) => {
+  const taxBase = roundNumber(unit * price);
+  const ivaPercent = iva / 100;
+  const total = roundNumber(taxBase * (ivaPercent + 1));
+  return ClientInvoiceModel.findOneAndUpdate({
+    _id: id,
+  }, {
+    $push: {
+      products: {
+        name,
+        iva,
+        unit,
         price,
-        quantity,
-        date: response.date,
-        canal,
-      });
-      return _mergeProduct(response, newProduct);
-    })
-    .then(calcData)
-    .then(deliveryOrder => ({
-      deliveryOrder,
-    }))
-);
+        taxBase,
+        total,
+      },
+    },
+  }, { new: true });
+};
 
 module.exports = addProduct;
