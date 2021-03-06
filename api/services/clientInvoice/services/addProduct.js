@@ -21,9 +21,9 @@ const addProduct = ({
     price,
   },
 }) => {
-  const total = roundNumber(unit * price);
+  const taxBase = roundNumber(unit * price);
   const ivaPercent = iva / 100;
-  const taxBase = roundNumber(total / (ivaPercent + 1));
+  const total = roundNumber(taxBase * (ivaPercent + 1));
   return ClientInvoiceModel.findOneAndUpdate({
     _id: id,
   }, {

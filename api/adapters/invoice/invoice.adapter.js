@@ -68,7 +68,11 @@ const dataAndPaymentResponse = invoice => ({
  * @param {Boolean} totals
  * @returns {{}}
  */
-const conditionalDataTotalsResponse = ({ invoice, data, totals }) => ({
+const conditionalDataTotalsResponse = ({
+  invoice,
+  data,
+  totals,
+}) => ({
   ...(data && { data: dataResponse(invoice) }),
   ...(totals && { totals: totalsResponse(invoice) }),
 });
