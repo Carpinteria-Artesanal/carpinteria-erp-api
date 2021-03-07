@@ -1,8 +1,8 @@
 const AccountService = require('./account.service');
 const AutoIncrementService = require('./autoincrement');
 const BillingService = require('./billing');
-const ClientService = require('./client');
 const ClientInvoiceService = require('./clientInvoice');
+const ClientService = require('./client');
 const DeliveryOrderService = require('./deliveryorder');
 const InvoiceService = require('./invoice');
 const NoteService = require('./note');
@@ -15,8 +15,8 @@ module.exports = {
   accountService: AccountService,
   autoIncrementService: AutoIncrementService,
   billingService: BillingService,
-  clientService: ClientService,
   clientInvoiceService: ClientInvoiceService,
+  clientService: ClientService,
   deliveryOrderService: DeliveryOrderService,
   invoiceService: InvoiceService,
   noteService: NoteService,

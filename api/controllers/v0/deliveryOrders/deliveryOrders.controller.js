@@ -6,7 +6,7 @@ const TYPE = 'ClientInvoiceController';
 
 const logService = new LogService(TYPE);
 
-class ClientInvoicesController {
+class DeliveryOrdersController {
   constructor({
     paymentService,
     errorHandler,
@@ -18,6 +18,7 @@ class ClientInvoicesController {
     clientInvoiceService,
     clientInvoiceValidator,
     clientInvoiceAdapter,
+    deliveryOrderService,
   }) {
     this.errorHandler = errorHandler;
     this.paymentService = paymentService;
@@ -29,6 +30,7 @@ class ClientInvoicesController {
     this.clientInvoiceService = clientInvoiceService;
     this.clientInvoiceValidator = clientInvoiceValidator;
     this.clientInvoiceAdapter = clientInvoiceAdapter;
+    this.deliveryOrderService = deliveryOrderService;
   }
 
   _handleError(res, error) {
@@ -70,7 +72,7 @@ class ClientInvoicesController {
     logService.logInfo('[invoices] - List of client invoices');
     Promise.resolve(req.query)
       .tap(this.invoiceValidator.isValidYear)
-      .then(this.clientInvoiceService.invoices)
+      .then(this.clientInvoiceService.orders)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
@@ -191,4 +193,4 @@ class ClientInvoicesController {
   }
 }
 
-module.exports = ClientInvoicesController;
+module.exports = DeliveryOrdersController;
