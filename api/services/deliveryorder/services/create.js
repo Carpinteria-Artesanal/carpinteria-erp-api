@@ -9,13 +9,13 @@ const {
  */
 const create = async ({ client }) => {
   const clientData = await ClientModel.findOne({ _id: client });
-  const newInvoice = await new DeliveryOrderModel({
+  const newDO = await new DeliveryOrderModel({
     client,
     nameClient: clientData.name,
   }).save();
 
   return {
-    id: newInvoice._id,
+    id: newDO._id,
   };
 };
 
