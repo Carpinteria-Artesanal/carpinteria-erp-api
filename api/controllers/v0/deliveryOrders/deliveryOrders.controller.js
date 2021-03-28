@@ -8,29 +8,27 @@ const logService = new LogService(TYPE);
 
 class DeliveryOrdersController {
   constructor({
-    paymentService,
     errorHandler,
     invoiceValidator,
-    billingService,
-    providerValidator,
     autoIncrementService,
     clientValidator,
     clientInvoiceService,
     clientInvoiceValidator,
     clientInvoiceAdapter,
     deliveryOrderService,
+    deliveryOrderValidator,
+    deliveryOrderAdapter,
   }) {
     this.errorHandler = errorHandler;
-    this.paymentService = paymentService;
     this.invoiceValidator = invoiceValidator;
-    this.billingService = billingService;
-    this.providerValidator = providerValidator;
     this.autoIncrementService = autoIncrementService;
     this.clientValidator = clientValidator;
     this.clientInvoiceService = clientInvoiceService;
     this.clientInvoiceValidator = clientInvoiceValidator;
     this.clientInvoiceAdapter = clientInvoiceAdapter;
     this.deliveryOrderService = deliveryOrderService;
+    this.deliveryOrderValidator = deliveryOrderValidator;
+    this.deliveryOrderAdapter = deliveryOrderAdapter;
   }
 
   _handleError(res, error) {
@@ -54,13 +52,13 @@ class DeliveryOrdersController {
   }
 
   /**
-   * Return invoice
+   * Return delivery order
    */
-  invoice(req, res) {
-    logService.logInfo('[inovice]  - Get invoice of client');
+  deliveryorder(req, res) {
+    logService.logInfo('[deliveryorder]  - Get delivery order of client');
     Promise.resolve(req.params)
-      .tap(this.clientInvoiceValidator.validateId)
-      .then(this.clientInvoiceService.invoice)
+      .tap(this.deliveryOrderValidator.validateId)
+      .then(this.deliveryOrderService.deliveryOrder)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
@@ -68,34 +66,34 @@ class DeliveryOrdersController {
   /**
    * Return all client invoices
    */
-  invoices(req, res) {
-    logService.logInfo('[invoices] - List of client invoices');
+  orders(req, res) {
+    logService.logInfo('[orders] - List of delivery orders');
     Promise.resolve(req.query)
-      .tap(this.invoiceValidator.isValidYear)
-      .then(this.clientInvoiceService.orders)
+      .tap(this.deliveryOrderValidator.isValidYear)
+      .then(this.deliveryOrderService.orders)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
 
-  invoicesShort(req, res) {
+  ordersShort(req, res) {
     logService.logInfo(
-      '[invoicesShort] - List of client invoices with short info',
+      '[ordersShort] - List of delivery orders with short info',
     );
     Promise.resolve(req.query)
       .tap(this.clientValidator.validateClient)
-      .then(this.clientInvoiceService.invoicesShort)
+      .then(this.deliveryOrderService.ordersShort)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
 
   /**
-   * Create the client invoice
+   * Create the delivery order
    */
   create(req, res) {
-    logService.logInfo('[create] - Crea factura para clientes');
+    logService.logInfo('[create] - Crea un albaran');
     Promise.resolve(req.body)
       .tap(this.clientValidator.validateClient)
-      .then(this.clientInvoiceService.create)
+      .then(this.deliveryOrderService.create)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
@@ -104,12 +102,10 @@ class DeliveryOrdersController {
    * Delete invoice
    */
   delete(req, res) {
-    logService.logInfo('[delete] - Eliminar factura de cliente');
+    logService.logInfo('[delete] - Eliminar un albaran');
     Promise.resolve(req.params)
       .tap(this.clientInvoiceValidator.validateId)
-      .tap(this.clientInvoiceValidator.isRemovable)
-      .then(this.clientInvoiceService.invoiceDelete)
-      .tap(this.autoIncrementService.decrementClientInvoice)
+      .then(this.deliveryOrderService.doDelete)
       .then(() => res.status(204)
         .send())
       .catch(this._handleError.bind(this, res));
@@ -121,10 +117,10 @@ class DeliveryOrdersController {
   edit(req, res) {
     logService.logInfo('[edit]  - Edit client invoices');
     Promise.resolve(req)
-      .tap(this.clientInvoiceValidator.validateIdParam)
-      .tap(this.clientInvoiceValidator.editBody)
-      .then(this.clientInvoiceService.invoiceEdit)
-      .then(this.clientInvoiceAdapter.conditionalDataTotalsResponse)
+      .tap(this.deliveryOrderValidator.validateIdParam)
+      .tap(this.deliveryOrderValidator.editBody)
+      .then(this.deliveryOrderService.doEdit)
+      .then(this.deliveryOrderAdapter.conditionalDataTotalsResponse)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
@@ -135,10 +131,10 @@ class DeliveryOrdersController {
   addProduct(req, res) {
     logService.logInfo('[addProduct]  - Añade un producto a un albarán');
     Promise.resolve(req)
-      .tap(this.clientInvoiceValidator.validateIdParam)
-      .tap(this.clientInvoiceValidator.validateProduct)
-      .then(this.clientInvoiceService.addProduct)
-      .then(this.clientInvoiceService.refresh)
+      .tap(this.deliveryOrderValidator.validateIdParam)
+      .tap(this.deliveryOrderValidator.validateProduct)
+      .then(this.deliveryOrderService.addProduct)
+      .then(this.deliveryOrderService.refresh)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
@@ -149,10 +145,10 @@ class DeliveryOrdersController {
   editProduct(req, res) {
     logService.logInfo('[editProduct]  - Edita un producto de un albarán');
     Promise.resolve(req)
-      .tap(this.clientInvoiceValidator.validateIdParam)
-      .tap(this.clientInvoiceValidator.validateProduct)
-      .then(this.clientInvoiceService.editProduct)
-      .then(this.clientInvoiceService.refresh)
+      .tap(this.deliveryOrderValidator.validateIdParam)
+      .tap(this.deliveryOrderValidator.validateProduct)
+      .then(this.deliveryOrderService.editProduct)
+      .then(this.deliveryOrderService.refresh)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
@@ -163,9 +159,9 @@ class DeliveryOrdersController {
   deleteProduct(req, res) {
     logService.logInfo('[deleteProduct] - Elimina un producto de un albarán');
     Promise.resolve(req.params)
-      .tap(this.clientInvoiceValidator.validateId)
-      .then(this.clientInvoiceService.deleteProduct)
-      .then(this.clientInvoiceService.refresh)
+      .tap(this.deliveryOrderValidator.validateId)
+      .then(this.deliveryOrderService.deleteProduct)
+      .then(this.deliveryOrderService.refresh)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
@@ -176,9 +172,9 @@ class DeliveryOrdersController {
   invoiceConfirm(req, res) {
     logService.logInfo('[invoiceConfirm]  - Confirm invoice');
     Promise.resolve(req.params)
-      .tap(this.clientInvoiceValidator.validateId)
-      .tap(this.clientInvoiceValidator.isValidForConfirmed)
-      .then(this.clientInvoiceService.invoiceConfirm)
+      .tap(this.deliveryOrderValidator.validateId)
+      .tap(this.deliveryOrderValidator.isValidForConfirmed)
+      .then(this.deliveryOrderService.doConfirm)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
@@ -186,8 +182,8 @@ class DeliveryOrdersController {
   export(req, res) {
     logService.logInfo('[inovice]  - Export invoice to ods');
     Promise.resolve(req.params)
-      .tap(this.clientInvoiceValidator.validateId)
-      .then(this.clientInvoiceService.exportOds)
+      .tap(this.deliveryOrderValidator.validateId)
+      .then(this.deliveryOrderService.exportOds)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }

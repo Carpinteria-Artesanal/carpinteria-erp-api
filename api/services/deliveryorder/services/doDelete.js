@@ -1,5 +1,5 @@
 const {
-  ClientInvoiceModel,
+  DeliveryOrderModel,
 } = require('carpinteria-erp-models');
 
 /**
@@ -7,6 +7,6 @@ const {
  * @param {Object} params
  * @returns {Promise<*>}
  */
-const doDelete = ({ id }) => ClientInvoiceModel.findOneAndDelete({ _id: id });
+const doDelete = ({ id }) => DeliveryOrderModel.findOneAndDelete({ _id: id });
 
 module.exports = doDelete;

@@ -1,4 +1,4 @@
-const { ClientInvoiceModel } = require('carpinteria-erp-models');
+const { DeliveryOrderModel } = require('carpinteria-erp-models');
 
 /**
  * Delete product of delivery order in invoice
@@ -7,7 +7,7 @@ const { ClientInvoiceModel } = require('carpinteria-erp-models');
 const deleteProduct = async ({
   id,
   product,
-}) => ClientInvoiceModel.findOneAndUpdate({
+}) => DeliveryOrderModel.findOneAndUpdate({
   _id: id,
 }, { $pull: { products: { _id: product } } },
 { new: true });

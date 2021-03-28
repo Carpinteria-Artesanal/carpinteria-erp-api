@@ -12,13 +12,14 @@ module.exports = (
   },
   {
     invoiceValidator,
-    providerValidator,
     clientValidator,
     clientInvoiceValidator,
+    deliveryOrderValidator,
   },
   {
     invoiceAdapter,
     clientInvoiceAdapter,
+    deliveryOrderAdapter,
   },
 ) => {
   const deliveryOrderController = new DeliveryOrderController({
@@ -27,12 +28,13 @@ module.exports = (
     invoiceValidator,
     invoiceAdapter,
     billingService,
-    providerValidator,
     autoIncrementService,
     clientValidator,
     clientInvoiceService,
     clientInvoiceValidator,
     clientInvoiceAdapter,
+    deliveryOrderValidator,
+    deliveryOrderAdapter,
   });
 
   return [{

@@ -3,7 +3,7 @@ const roundNumber = require('../../../../utils/roundNumber');
 
 /**
  * Actualiza el albaran
- * @param {Object} invoice
+ * @param {Object} deliveryOrder
  * @returns {Promise<{invoice}|*>}
  */
 const refresh = deliveryOrder => {

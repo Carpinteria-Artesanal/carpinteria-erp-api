@@ -1,4 +1,4 @@
-const { ClientInvoiceModel } = require('carpinteria-erp-models');
+const { DeliveryOrderModel } = require('carpinteria-erp-models');
 const roundNumber = require('../../../../utils/roundNumber');
 
 /**
@@ -26,7 +26,7 @@ const editDeliveryOrder = ({
   const taxBase = roundNumber(unit * price);
   const ivaPercent = iva / 100;
   const total = roundNumber(taxBase * (ivaPercent + 1));
-  return ClientInvoiceModel.findOneAndUpdate({
+  return DeliveryOrderModel.findOneAndUpdate({
     _id: id,
     'products._id': product,
   }, {

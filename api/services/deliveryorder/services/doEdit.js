@@ -1,4 +1,4 @@
-const { ClientInvoiceModel } = require('carpinteria-erp-models');
+const { DeliveryOrderModel } = require('carpinteria-erp-models');
 
 /**
  * Modifica la factura de cliente
@@ -23,7 +23,7 @@ const clientInvoiceEdit = ({
       taxBase: totals.taxBase,
     }),
   };
-  return ClientInvoiceModel
+  return DeliveryOrderModel
     .findOneAndUpdate({ _id: id }, newData, { new: true })
     .then(invoiceUpdated => ({
       invoice: invoiceUpdated,

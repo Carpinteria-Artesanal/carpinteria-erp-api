@@ -1,5 +1,5 @@
 const carbone = require('carbone');
-const { ClientInvoiceModel, ClientModel } = require('carpinteria-erp-models');
+const { DeliveryOrderModel, ClientModel } = require('carpinteria-erp-models');
 const { formatDate } = require('../../../../utils');
 
 /* istanbul ignore next */
@@ -28,7 +28,7 @@ const _invoicesAdapter = invoice => ({
 
 /* istanbul ignore next */
 const _getInvoice = async id => {
-  const invoice = await ClientInvoiceModel.findOne({ _id: id }).populate('client', null, ClientModel);
+  const invoice = await DeliveryOrderModel.findOne({ _id: id }).populate('client', null, ClientModel);
 
   return _invoicesAdapter(invoice);
 };
