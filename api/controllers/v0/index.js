@@ -20,7 +20,7 @@ module.exports = [
   ...ClientController(services, validators),
   ...ClientInvoicesController(services, validators, adapters),
   ...DashboardController(services, validators),
-  ...DeliveryOrderController(services,validators,adapters),
+  ...DeliveryOrderController(services, validators, adapters),
   ...InvoiceController(services, validators, adapters),
   ...NoteController(services, validators),
   ...PaymentController(services, validators),

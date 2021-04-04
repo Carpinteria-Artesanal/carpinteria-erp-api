@@ -5,36 +5,24 @@ const DeliveryOrderController = require('./deliveryOrders.controller');
 
 module.exports = (
   {
-    paymentService,
-    billingService,
     autoIncrementService,
-    clientInvoiceService,
+    deliveryOrderService,
   },
   {
-    invoiceValidator,
     clientValidator,
-    clientInvoiceValidator,
     deliveryOrderValidator,
   },
   {
-    invoiceAdapter,
-    clientInvoiceAdapter,
     deliveryOrderAdapter,
   },
 ) => {
   const deliveryOrderController = new DeliveryOrderController({
-    paymentService,
     errorHandler,
-    invoiceValidator,
-    invoiceAdapter,
-    billingService,
     autoIncrementService,
     clientValidator,
-    clientInvoiceService,
-    clientInvoiceValidator,
-    clientInvoiceAdapter,
     deliveryOrderValidator,
     deliveryOrderAdapter,
+    deliveryOrderService,
   });
 
   return [{
@@ -52,7 +40,7 @@ module.exports = (
     method: 'get',
     domain: 'deliveryorders',
     path: '/',
-    handler: deliveryOrderController.invoices,
+    handler: deliveryOrderController.orders,
     bindTo: deliveryOrderController,
     skipVersion: true,
     middlewares: [
@@ -82,7 +70,7 @@ module.exports = (
     method: 'get',
     domain: 'deliveryorders',
     path: '/short',
-    handler: deliveryOrderController.invoicesShort,
+    handler: deliveryOrderController.ordersShort,
     bindTo: deliveryOrderController,
     skipVersion: true,
     middlewares: [
@@ -93,7 +81,7 @@ module.exports = (
     method: 'get',
     domain: 'deliveryorders',
     path: '/:id',
-    handler: deliveryOrderController.invoice,
+    handler: deliveryOrderController.deliveryorder,
     bindTo: deliveryOrderController,
     skipVersion: true,
     middlewares: [
@@ -110,7 +98,7 @@ module.exports = (
       authMiddleware,
     ],
   }, {
-    method: 'patch',
+    method: 'put',
     domain: 'deliveryorders',
     path: '/:id/product/:product',
     handler: deliveryOrderController.editProduct,

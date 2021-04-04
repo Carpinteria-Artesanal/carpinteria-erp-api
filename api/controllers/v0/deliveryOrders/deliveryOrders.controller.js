@@ -12,9 +12,6 @@ class DeliveryOrdersController {
     invoiceValidator,
     autoIncrementService,
     clientValidator,
-    clientInvoiceService,
-    clientInvoiceValidator,
-    clientInvoiceAdapter,
     deliveryOrderService,
     deliveryOrderValidator,
     deliveryOrderAdapter,
@@ -23,9 +20,6 @@ class DeliveryOrdersController {
     this.invoiceValidator = invoiceValidator;
     this.autoIncrementService = autoIncrementService;
     this.clientValidator = clientValidator;
-    this.clientInvoiceService = clientInvoiceService;
-    this.clientInvoiceValidator = clientInvoiceValidator;
-    this.clientInvoiceAdapter = clientInvoiceAdapter;
     this.deliveryOrderService = deliveryOrderService;
     this.deliveryOrderValidator = deliveryOrderValidator;
     this.deliveryOrderAdapter = deliveryOrderAdapter;
@@ -34,7 +28,7 @@ class DeliveryOrdersController {
   _handleError(res, error) {
     switch (error.name) {
     case 'ClientIdNotFound':
-    case 'InvoiceIdNotFound':
+    case 'DeliveryOrderNotFound':
       this.errorHandler.sendNotFound(res)(error);
       break;
     case 'ParamNotValidError':
@@ -104,7 +98,7 @@ class DeliveryOrdersController {
   delete(req, res) {
     logService.logInfo('[delete] - Eliminar un albaran');
     Promise.resolve(req.params)
-      .tap(this.clientInvoiceValidator.validateId)
+      .tap(this.deliveryOrderValidator.validateId)
       .then(this.deliveryOrderService.doDelete)
       .then(() => res.status(204)
         .send())

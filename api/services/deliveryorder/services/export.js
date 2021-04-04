@@ -40,7 +40,7 @@ const exportOds = async ({ id }) => {
   let bookFile = null;
   let error = null;
 
-  carbone.render('./plantillas/factura.ods', invoice, {
+  carbone.render('./plantillas/albaran.ods', invoice, {
     lang: 'es-es',
   }, (err, result) => {
     /* istanbul ignore next */
