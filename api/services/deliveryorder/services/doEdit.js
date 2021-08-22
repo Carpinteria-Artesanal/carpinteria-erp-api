@@ -25,8 +25,8 @@ const clientInvoiceEdit = ({
   };
   return DeliveryOrderModel
     .findOneAndUpdate({ _id: id }, newData, { new: true })
-    .then(invoiceUpdated => ({
-      invoice: invoiceUpdated,
+    .then(doUpdated => ({
+      deliveryOrder: doUpdated,
       date: Boolean(date),
       totals: Boolean(totals),
     }));
