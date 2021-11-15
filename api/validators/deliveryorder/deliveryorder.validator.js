@@ -1,8 +1,10 @@
 const {
   DeliveryOrderModel,
-  ProviderModel,
 } = require('carpinteria-erp-models');
-const { deliveryOrderErrors, commonErrors } = require('../../../errors');
+const {
+  deliveryOrderErrors,
+  commonErrors,
+} = require('../../../errors');
 
 /**
  * Check if exist id
@@ -21,17 +23,6 @@ const _checkId = async id => {
  */
 const validateId = ({ id }) => _checkId(id);
 const validateIdParam = ({ params }) => validateId(params);
-
-/**
- * Valida si existe el proveedor
- * @param {String} provider
- * @returns {Promise<void>}
- */
-const validateProvider = async ({ provider }) => {
-  if (!provider) throw new deliveryOrderErrors.DeliveryOrderMissing();
-  const providerExist = await ProviderModel.exists({ _id: provider });
-  if (!providerExist) throw new deliveryOrderErrors.DeliveryOrderProviderNotFound();
-};
 
 /**
  * Valida los parametros para añadir o modificar un producto
@@ -79,16 +70,6 @@ const hasDate = async ({ params: { id } }) => {
 };
 
 /**
- * Devuelve si el albarán tiene una factura asignada
- * @param {string} id
- * @return {Promise<void>}
- */
-const isRemovable = async ({ id }) => {
-  const deliveryOrder = await DeliveryOrderModel.findOne({ _id: id });
-  if (deliveryOrder.invoice) throw new deliveryOrderErrors.DeliveryOrderDeleteWithInvoice();
-};
-
-/**
  * Check if year if valid
  * @param {String} year
  */
@@ -100,11 +81,9 @@ const isValidYear = ({ year }) => {
 module.exports = {
   validateId,
   validateIdParam,
-  validateProvider,
   validateProductParams,
   validateProductIndex,
   validateProductIndexParams,
   hasDate,
-  isRemovable,
   isValidYear,
 };

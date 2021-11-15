@@ -1,3 +1,3 @@
-const DeliveryOrderService = require('./deliveryorder.service');
+const DeliveryOrderService = require('./deliveryOrder.service');
 
 module.exports = DeliveryOrderService;

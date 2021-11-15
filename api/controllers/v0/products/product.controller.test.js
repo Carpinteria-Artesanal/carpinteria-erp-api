@@ -918,7 +918,6 @@ describe('ProductController', () => {
           expect(response.body[0].price).toBe(productClient.price);
         });
       });
-
     });
   });
 });

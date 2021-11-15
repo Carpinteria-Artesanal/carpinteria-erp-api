@@ -1,26 +1,26 @@
 const supertest = require('supertest');
 const {
-        mongoose,
-        InvoiceModel,
-        DeliveryOrderModel,
-        ProviderModel,
-        AutoIncrement,
-        PaymentModel,
-        BillingModel,
-      } = require('carpinteria-erp-models');
+  mongoose,
+  InvoiceModel,
+  DeliveryOrderModel,
+  ProviderModel,
+  AutoIncrement,
+  PaymentModel,
+  BillingModel,
+} = require('carpinteria-erp-models');
 const testDB = require('../../../../test/test-db')(mongoose);
 const requestLogin = require('../../../../test/request-login');
 const app = require('../../../../index');
 const {
-        commonErrors,
-        invoiceErrors,
-        providerErrors,
-      } = require('../../../../errors');
+  commonErrors,
+  invoiceErrors,
+  providerErrors,
+} = require('../../../../errors');
 const {
-        CONCEPT,
-        TYPE_PAYMENT,
-        COLUMNS_INVOICES,
-      } = require('../../../../constants/index');
+  CONCEPT,
+  TYPE_PAYMENT,
+  COLUMNS_INVOICES,
+} = require('../../../../constants/index');
 
 const deliveryOrderMock = {
   provider: '5f14857d3ae0d32b417e8d0c',
@@ -1853,7 +1853,6 @@ describe('InvoicesController', () => {
             .toBe(200);
         });
       });
-
 
       describe('La petición se procesa correctamente mes 1', () => {
         let response;

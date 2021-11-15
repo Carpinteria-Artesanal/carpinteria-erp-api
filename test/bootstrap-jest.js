@@ -1,4 +1,5 @@
 global.Promise = require('bluebird');
+
 global.context = describe;
 global.before = beforeAll;
 global.after = afterAll;
