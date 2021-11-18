@@ -2,6 +2,7 @@ const { ClientModel } = require('carpinteria-erp-models');
 
 const ClientInvoiceService = require('../clientInvoice');
 const DeliveryOrderServices = require('../deliveryorder');
+const BudgetServices = require('../budget');
 
 /**
  * Return all providers
@@ -64,10 +65,16 @@ const client = async ({ id }) => {
     limit: 10,
   });
 
+  const budgets = await BudgetServices.ordersShort({
+    client: id,
+    limit: 10,
+  });
+
   return {
     client: clientData,
     invoices,
     deliveryOrders,
+    budgets,
   };
 };
 
