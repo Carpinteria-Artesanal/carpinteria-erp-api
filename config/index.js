@@ -17,6 +17,19 @@ const config = {
       useCreateIndex: true,
     },
   },
+  mail: {
+    host: process.env.SMTP_HOST || '',
+    port: 465,
+    secure: true, // use TLS
+    auth: {
+      user: process.env.SMTP_USER || '',
+      pass: process.env.SMTP_PASW || '',
+    },
+    tls: {
+      // do not fail on invalid certs
+      rejectUnauthorized: false,
+    },
+  },
 };
 
 module.exports = config;
