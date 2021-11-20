@@ -9,7 +9,6 @@ const {
   commonErrors,
 } = require('../../../errors');
 const {
-  CONCEPT,
   TYPE_PAYMENT,
 } = require('../../../constants');
 const { isNumber } = require('../../../utils');
@@ -81,11 +80,16 @@ const confirmParams = async ({
 /**
  * Valida los datos envíados para crear una factura
  * @param concept
- * @param deliveryOrders
+ * @param dateInvoice
+ * @param dateRegister
+ * @param total
+ * @param provider
+ * @param type
+ * @param bookColumn
+ * @param re
  */
 const createParams = ({
   concept,
-  deliveryOrders,
   dateInvoice,
   dateRegister,
   total,
@@ -96,14 +100,9 @@ const createParams = ({
 }) => {
   if (!concept || !bookColumn) throw new invoiceErrors.InvoiceParamsMissing();
 
-  if (concept === CONCEPT.COMPRAS && !deliveryOrders?.length)
-    throw new invoiceErrors.InvoiceMissingDeliveryOrders();
-
-  if (![CONCEPT.COMPRAS].includes(concept)) {
-    if (!isNumber(dateInvoice) || !isNumber(dateRegister) || !isNumber(total)
-      || !provider || !type || (re && !isNumber(re)))
-      throw new invoiceErrors.InvoiceParamsMissing();
-  }
+  if (!isNumber(dateInvoice) || !isNumber(dateRegister) || !isNumber(total)
+    || !provider || !type || (re && !isNumber(re)))
+    throw new invoiceErrors.InvoiceParamsMissing();
 };
 
 const editBody = ({
