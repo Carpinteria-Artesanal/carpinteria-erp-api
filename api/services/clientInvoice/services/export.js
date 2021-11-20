@@ -7,7 +7,7 @@ const _productAdapter = product => ({
   descripcion: product.name,
   unidades: `${product.unit.toLocaleString('es-ES')}`,
   precio: `${product.price.toLocaleString('es-ES')} €`,
-  importe: `${product.total.toLocaleString('es-ES')} €`,
+  importe: `${product.taxBase.toLocaleString('es-ES')} €`,
 });
 
 /* istanbul ignore next */
