@@ -15,7 +15,7 @@ const invoiceConfirm = async ({ id }) => {
   if (num < 100) num = `0${num}`;
   const nInvoice = `${date}/${num}`;
 
-  await ClientInvoiceModel.updateOne({ _id: id }, { nInvoice });
+  await ClientInvoiceModel.updateOne({ _id: id }, { nInvoice, remaining: invoiceData.total });
 
   return { nInvoice };
 };

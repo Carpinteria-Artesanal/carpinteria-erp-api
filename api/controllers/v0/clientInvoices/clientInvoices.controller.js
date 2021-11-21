@@ -189,6 +189,14 @@ class ClientInvoicesController {
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
+
+  unpaidInvoices(req, res) {
+    logService.logInfo('[unpaidInvoices] - List of unpaid invoices of clients ',);
+    Promise.resolve(req.query)
+      .then(this.clientInvoiceService.unpaidInvoices)
+      .then(data => res.send(data))
+      .catch(this._handleError.bind(this, res));
+  }
 }
 
 module.exports = ClientInvoicesController;

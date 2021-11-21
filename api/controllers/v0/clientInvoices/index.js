@@ -60,6 +60,17 @@ module.exports = (
     middlewares: [
       authMiddleware,
     ],
+  },
+  {
+    method: 'get',
+    domain: 'client/invoices',
+    path: '/unpaid',
+    handler: clientInvoicesController.unpaidInvoices,
+    bindTo: clientInvoicesController,
+    skipVersion: true,
+    middlewares: [
+      authMiddleware,
+    ],
   }, {
     method: 'patch',
     domain: 'client/invoices',
@@ -156,16 +167,6 @@ module.exports = (
     domain: 'client/invoices',
     path: '/export/:year/:month',
     handler: clientInvoicesController.export,
-    bindTo: clientInvoicesController,
-    skipVersion: true,
-    middlewares: [
-      authMiddleware,
-    ],
-  }, {
-    method: 'patch',
-    domain: 'client/invoices',
-    path: '/swap/:a/:b',
-    handler: clientInvoicesController.swap,
     bindTo: clientInvoicesController,
     skipVersion: true,
     middlewares: [
