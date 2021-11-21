@@ -5,7 +5,6 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 class MongoDbEnvironment extends NodeEnvironment {
   constructor(config) {
     super(config);
-    // eslint-disable-next-line new-cap
     this.mongod = null;
   }
 
