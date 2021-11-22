@@ -172,5 +172,16 @@ module.exports = (
     middlewares: [
       authMiddleware,
     ],
+  },
+  {
+    method: 'post',
+    domain: 'client/invoices',
+    path: '/:id/payments',
+    handler: clientInvoicesController.addPayment,
+    bindTo: clientInvoicesController,
+    skipVersion: true,
+    middlewares: [
+      authMiddleware,
+    ],
   }];
 };

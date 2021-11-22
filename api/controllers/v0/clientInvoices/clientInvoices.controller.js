@@ -137,6 +137,7 @@ class ClientInvoicesController {
       .tap(this.clientInvoiceValidator.validateProduct)
       .then(this.clientInvoiceService.addProduct)
       .then(this.clientInvoiceService.refresh)
+      .tap(this.clientInvoiceService.refreshPayments)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
@@ -151,6 +152,7 @@ class ClientInvoicesController {
       .tap(this.clientInvoiceValidator.validateProduct)
       .then(this.clientInvoiceService.editProduct)
       .then(this.clientInvoiceService.refresh)
+      .tap(this.clientInvoiceService.refreshPayments)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
@@ -164,6 +166,7 @@ class ClientInvoicesController {
       .tap(this.clientInvoiceValidator.validateId)
       .then(this.clientInvoiceService.deleteProduct)
       .then(this.clientInvoiceService.refresh)
+      .tap(this.clientInvoiceService.refreshPayments)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
@@ -193,6 +196,21 @@ class ClientInvoicesController {
   unpaidInvoices(req, res) {
     logService.logInfo('[unpaidInvoices] - List of unpaid invoices of clients ',);
     Promise.resolve(req.query)
+      .then(this.clientInvoiceService.unpaidInvoices)
+      .then(data => res.send(data))
+      .catch(this._handleError.bind(this, res));
+  }
+
+  /**
+   * Add payment
+   */
+  addPayment(req, res) {
+    logService.logInfo('[addPayment]  - Añade un pago a la factura de cliente');
+    Promise.resolve(req)
+      .tap(this.clientInvoiceValidator.validateIdParam)
+      .tap(this.clientInvoiceValidator.validatePayment)
+      .then(this.clientInvoiceService.addPayment)
+      .tap(this.clientInvoiceService.refreshPayments)
       .then(this.clientInvoiceService.unpaidInvoices)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));

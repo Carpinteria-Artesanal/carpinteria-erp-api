@@ -15,6 +15,9 @@ const addProduct = require('./services/addProduct');
 const editProduct = require('./services/editProduct');
 const deleteProduct = require('./services/deleteProduct');
 
+const addPayment = require('./services/addPayment');
+const refreshPayments = require('./services/refreshPayments');
+
 /**
  * Get invoice data
  * @param {String} id
@@ -36,4 +39,6 @@ module.exports = {
   refresh,
   exportOds,
   unpaidInvoices,
+  addPayment,
+  refreshPayments,
 };

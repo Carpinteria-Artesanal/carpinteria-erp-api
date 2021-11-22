@@ -93,6 +93,17 @@ const validateProduct = ({
     throw new invoiceErrors.InvoiceParamsMissing();
 };
 
+const validatePayment = ({
+  body: {
+    amount,
+    date,
+    paymentType,
+  },
+}) => {
+  if (!isNumber(amount) || !isNumber(date) || !paymentType)
+    throw new invoiceErrors.InvoiceParamsMissing();
+};
+
 module.exports = {
   validateId,
   validateIdParam,
@@ -101,4 +112,5 @@ module.exports = {
   isValidDate,
   validateProduct,
   isValidForConfirmed,
+  validatePayment,
 };
