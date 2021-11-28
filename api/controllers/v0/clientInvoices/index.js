@@ -152,6 +152,17 @@ module.exports = (
     middlewares: [
       authMiddleware,
     ],
+  },
+  {
+    method: 'post',
+    domain: 'client/invoices',
+    path: '/:id/payments',
+    handler: clientInvoicesController.addPayment,
+    bindTo: clientInvoicesController,
+    skipVersion: true,
+    middlewares: [
+      authMiddleware,
+    ],
   }, {
     method: 'get',
     domain: 'client/invoices',
@@ -173,15 +184,5 @@ module.exports = (
       authMiddleware,
     ],
   },
-  {
-    method: 'post',
-    domain: 'client/invoices',
-    path: '/:id/payments',
-    handler: clientInvoicesController.addPayment,
-    bindTo: clientInvoicesController,
-    skipVersion: true,
-    middlewares: [
-      authMiddleware,
-    ],
-  }];
+  ];
 };
