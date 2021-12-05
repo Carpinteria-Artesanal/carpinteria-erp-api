@@ -17,7 +17,7 @@ const orders = ({
       $gte: start,
       $lt: end,
     },
-  }, '_id nameClient total date nOrder')
+  }, '_id nameClient total date nInvoice')
     .sort({ date: -1 })
     .lean();
 };

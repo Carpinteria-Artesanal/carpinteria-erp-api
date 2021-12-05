@@ -27,7 +27,7 @@ const invoices = ({
     },
     ...(total && { total: Number(total) }),
     ...(nInvoice && { nInvoice: { $regex: nInvoice } }),
-  }, '_id nameClient total date nInvoice payment.paid')
+  }, '_id nameClient total date nInvoice paid')
     .sort({ date: -1 })
     .skip(Number(offset || 0))
     .limit(Number(limit || 100))
