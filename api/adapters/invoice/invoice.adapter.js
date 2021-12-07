@@ -20,21 +20,7 @@ const dataResponse = invoice => ({
 const totalsResponse = invoice => ({
   taxBase: invoice.taxBase,
   iva: invoice.iva,
-  re: invoice.re,
   total: invoice.total,
-});
-
-/**
- * Devuelve la infomación del pago
- * @param {Object} payment
- * @returns {{[numCheque]: String, paid: Boolean, type: String, paymentDate: Number}}
- */
-const paymentResponse = ({ payment }) => ({
-  type: payment.type,
-  paymentDate: payment.paymentDate,
-  ...(payment.numCheque && { numCheque: payment.numCheque }),
-  paid: Boolean(payment.paid),
-  ...(payment.invoicesOrder && { invoicesOrder: payment.invoicesOrder }),
 });
 
 /**
@@ -58,7 +44,7 @@ const dataAndTotalsResponse = invoice => ({
  */
 const dataAndPaymentResponse = invoice => ({
   data: dataResponse(invoice),
-  payment: paymentResponse(invoice),
+  payments: invoice.payments,
 });
 
 /**
@@ -93,21 +79,9 @@ const fullResponse = invoice => ({
   provider: invoice.provider,
   nameProvider: invoice.nameProvider,
   ...dataAndTotalsResponse(invoice),
-  deliveryOrders: invoice.deliveryOrders.map(deliveryOrder => ({
-    _id: deliveryOrder._id,
-    date: deliveryOrder.date,
-    taxBase: deliveryOrder.taxBase,
-    iva: deliveryOrder.iva,
-    re: deliveryOrder.re,
-    total: deliveryOrder.total,
-    products: deliveryOrder.products.map(product => ({
-      price: product.price,
-      quantity: product.quantity,
-      name: product.name,
-      taxBase: product.taxBase,
-    })),
-  })),
-  ...(invoice.payment.type && { payment: paymentResponse(invoice) }),
+  paid: invoice.paid,
+  payments: invoice.payments,
+  paymentType: invoice.paymentType,
 });
 
 module.exports = {

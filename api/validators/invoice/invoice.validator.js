@@ -94,14 +94,14 @@ const createParams = ({
   dateRegister,
   total,
   provider,
-  type,
   bookColumn,
-  re,
+  paymentType,
+  payments,
 }) => {
   if (!concept || !bookColumn) throw new invoiceErrors.InvoiceParamsMissing();
 
   if (!isNumber(dateInvoice) || !isNumber(dateRegister) || !isNumber(total)
-    || !provider || !type || (re && !isNumber(re)))
+    || !provider || !paymentType || !payments?.length)
     throw new invoiceErrors.InvoiceParamsMissing();
 };
 

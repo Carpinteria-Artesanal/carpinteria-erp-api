@@ -1,8 +1,7 @@
-const { InvoiceModel, DeliveryOrderModel } = require('carpinteria-erp-models');
+const { InvoiceModel } = require('carpinteria-erp-models');
 
 // Split services
 const invoiceConfirm = require('./services/invoiceConfirm');
-const create = require('./services/create');
 const invoiceEdit = require('./services/invoiceEdit');
 const refresh = require('./services/refresh');
 const invoices = require('./services/invoices');
@@ -17,11 +16,9 @@ const swap = require('./services/swap');
  * @param {String} id
  * @returns {Promise<*>}
  */
-const invoice = ({ id }) => InvoiceModel.findOne({ _id: id })
-  .populate('deliveryOrders', null, DeliveryOrderModel);
+const invoice = ({ id }) => InvoiceModel.findOne({ _id: id });
 
 module.exports = {
-  create,
   invoice,
   invoices,
   invoicesShort,

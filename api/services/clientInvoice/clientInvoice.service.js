@@ -26,7 +26,7 @@ const refreshPayments = require('./services/refreshPayments');
 const invoice = ({ id }) => ClientInvoiceModel.findOne({ _id: id });
 
 module.exports = {
-  create, // DONE 1/2
+  create,
   invoice,
   invoices,
   invoicesShort,

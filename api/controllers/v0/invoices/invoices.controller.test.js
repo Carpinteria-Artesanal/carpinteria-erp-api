@@ -22,58 +22,6 @@ const {
   COLUMNS_INVOICES,
 } = require('../../../../constants/index');
 
-const deliveryOrderMock = {
-  provider: '5f14857d3ae0d32b417e8d0c',
-  nameProvider: 'Primero',
-  date: 1596632580000.0,
-  total: 75.48,
-  iva: 6.8,
-  rate: 0.5,
-  re: 0.68,
-  taxBase: 68,
-  products: [
-    {
-      code: '',
-      product: '5f188ec1deae8d5c1b549336',
-      price: 8,
-      quantity: 8,
-      name: 'yiuyi',
-      taxBase: 68,
-      rate: 0.5,
-      iva: 6.8,
-      re: 0.68,
-      total: 75.48,
-    },
-  ],
-};
-
-const deliveryOrder2Mock = {
-  provider: '5f14857d3ae0d32b417e8d0c',
-  nameProvider: 'Primero',
-  date: 1597323720000.0,
-  size: 0,
-  total: 69.544,
-  iva: 2.624,
-  rate: 0.201,
-  re: 1.312,
-  taxBase: 65.608,
-  products: [
-    {
-      code: '12',
-      product: '5f148a51702f6d366d76d9c4',
-      price: 8,
-      quantity: 8,
-      name: 'prueba',
-      taxBase: 65.608,
-      rate: 0.201,
-      diff: 7,
-      iva: 2.624,
-      re: 1.312,
-      total: 69.544,
-    },
-  ],
-};
-
 const invoiceMock = {
   total: 75.48,
   iva: 6.8,
@@ -96,26 +44,18 @@ const invoiceMock = {
 };
 
 const invoiceExpenseCreate = {
-  concept: CONCEPT.ALQUILER,
   nInvoice: '2019/22',
   dateInvoice: 1596891780000,
   dateRegister: 1597410180000,
   total: 12.5,
   provider: '5f14857d3ae0d32b417e8d0c',
-  re: 0.1,
   type: 'Talón',
   bookColumn: COLUMNS_INVOICES.ALQUILER,
-};
-
-const invoiceExpenseCreate2 = {
-  concept: 'Luz',
-  nInvoice: '2019/22',
-  dateInvoice: 1596891780000,
-  dateRegister: 1597410180000,
-  total: 12.5,
-  provider: '5f14857d3ae0d32b417e8d0c',
-  type: 'Efectivo',
-  paymentDate: 1597410180000,
+  paymentType: 'Efectivo',
+  payments: [{
+    paymentDate: 1596891780000.0,
+    amount: 12,
+  }],
   paid: true,
 };
 
@@ -518,17 +458,8 @@ describe('InvoicesController', () => {
       describe('Devuelve los datos de la factura ', () => {
         let response;
         let invoice;
-        let deliveryOrder;
 
-        before(() => DeliveryOrderModel.create(deliveryOrderMock)
-          .then(orderCreated => {
-            deliveryOrder = orderCreated;
-          }));
-
-        before(() => InvoiceModel.create({
-          ...invoiceMock,
-          deliveryOrders: [deliveryOrder._id],
-        })
+        before(() => InvoiceModel.create(invoiceMock)
           .then(invoiceCreated => {
             invoice = invoiceCreated;
           }));
@@ -557,8 +488,6 @@ describe('InvoicesController', () => {
             .toBe(invoiceMock.provider);
           expect(bodyResponse.name)
             .toBe(invoiceMock.name);
-          expect(bodyResponse.deliveryOrders.length)
-            .toBe(1);
         });
       });
     });
@@ -945,8 +874,6 @@ describe('InvoicesController', () => {
               .toBe(nameProvider);
             expect(response.body.provider)
               .toBe(provider._id.toString());
-            expect(response.body.re)
-              .toBe(invoice.re);
             expect(response.body.total)
               .toBe(invoice.total);
             expect(response.body.bookColumn)
@@ -1763,7 +1690,7 @@ describe('InvoicesController', () => {
         });
 
         test('El pago se marca como pagado', () => {
-          expect(response.body.payment.paid)
+          expect(response.body.paid)
             .toBe(true);
         });
       });

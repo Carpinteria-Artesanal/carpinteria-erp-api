@@ -15,7 +15,6 @@ class InvoicesController {
     invoiceValidator,
     billingService,
     providerValidator,
-    deliveryOrderService,
     autoIncrementService,
   }) {
     this.invoiceService = invoiceService;
@@ -25,7 +24,6 @@ class InvoicesController {
     this.invoiceValidator = invoiceValidator;
     this.billingService = billingService;
     this.providerValidator = providerValidator;
-    this.deliveryOrderService = deliveryOrderService;
     this.autoIncrementService = autoIncrementService;
   }
 
@@ -35,13 +33,10 @@ class InvoicesController {
     case 'DateNotValid':
       this.errorHandler.sendValidationError(res)(error);
       break;
-    case 'InvoiceNotFoundDeliveryOrder':
     case 'InvoiceIdNotFound':
       this.errorHandler.sendNotFound(res)(error);
       break;
-    case 'InvoiceMissingDeliveryOrders':
     case 'InvoiceParamsMissing':
-    case 'InvoiceWithoutDeliveryOrders':
     case 'InvoiceNoRemovable':
     case 'PaymentMerged':
     case 'ParamNotValidError':
@@ -93,18 +88,6 @@ class InvoicesController {
   }
 
   /**
-   * Create the invoice
-   */
-  create(req, res) {
-    logService.logInfo('[invoices] - Create invoice');
-    Promise.resolve(req.body)
-      .tap(this.invoiceValidator.createParams)
-      .then(this.invoiceService.create)
-      .then(data => res.send(data))
-      .catch(this._handleError.bind(this, res));
-  }
-
-  /**
    * Delete invoice
    */
   delete(req, res) {
@@ -113,7 +96,6 @@ class InvoicesController {
       .tap(this.invoiceValidator.validateId)
       .tap(this.invoiceValidator.isRemovable)
       .then(this.invoiceService.invoiceDelete)
-      .tap(this.deliveryOrderService.refreshInvoice)
       .tap(this.autoIncrementService.decrementInvoice)
       .tap(this.paymentService.remove)
       .tap(this.billingService.remove)
@@ -133,7 +115,7 @@ class InvoicesController {
       .tap(this.invoiceValidator.createParams)
       .tap(this.invoiceValidator.validateNInvoice)
       .then(this.invoiceService.expenseCreate)
-      .tap(this.paymentService.create)
+      // .tap(this.paymentService.create)
       .tap(this.billingService.add)
       .tap(this.billingService.refresh)
       .then(data => res.send(data))

@@ -32,10 +32,10 @@ const validateProductBody = ({ body: { product } }) => _checkId(product);
  */
 const validateFields = ({
   name,
-  iva,
-  re,
+  code,
+  price,
 }) => {
-  if (!name || typeof iva !== 'number' || typeof re !== 'number') throw new productErrors.ProductMissingParams();
+  if (!name || !code || typeof price !== 'number') throw new productErrors.ProductMissingParams();
 };
 
 const validateFieldsBody = ({ body }) => validateFields(body);

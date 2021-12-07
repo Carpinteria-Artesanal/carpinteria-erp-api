@@ -1,15 +1,14 @@
 const { InvoiceModel, ProviderModel } = require('carpinteria-erp-models');
 
 const generateOrderNumber = require('../../../../components/generate-num-order');
-const { isTypeCash } = require('../../../../utils');
 
 /**
  * Create invoice
  * @param {Object} data
  */
 const create = async ({
-  nInvoice, dateInvoice, dateRegister, total, provider, concept, re, type, paymentDate,
-  bookColumn, mailSend,
+  nInvoice, dateInvoice, dateRegister, total, provider, concept, paymentType, payments,
+  bookColumn,
 }) => {
   const { name, businessName, cif } = await ProviderModel.findOne({ _id: provider });
 
@@ -26,14 +25,9 @@ const create = async ({
     provider,
     concept,
     bookColumn,
-    ...(re && { re }),
     total,
-    ...(mailSend && { mailSend }),
-    payment: {
-      ...(paymentDate && { paymentDate }),
-      type,
-      ...(isTypeCash(type) && { paid: true }),
-    },
+    paymentType,
+    payments,
   };
 
   return new InvoiceModel(invoice).save();

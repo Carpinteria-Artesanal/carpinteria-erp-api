@@ -25,7 +25,7 @@
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "carbone": "^3.2.3",
-    "carpinteria-erp-models": "^0.3.0",
+    "carpinteria-erp-models": "^0.3.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "helmet": "^4.6.0",
@@ -37,7 +37,7 @@
     "node": "14.x"
   },
   "devDependencies": {
-    "eslint": "^8.4.0",
+    "eslint": "^8.4.1",
     "eslint-config-airbnb": "^19.0.2",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.3",
@@ -65,5 +65,10 @@
     "collectCoverageFrom": [],
     "coveragePathIgnorePatterns": [],
     "testRunner": "jest-circus/runner"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "version": "4.4.10"
+    }
   }
 }

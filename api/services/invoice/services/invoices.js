@@ -40,7 +40,7 @@ const invoices = async ({
 
   const count = await InvoiceModel.countDocuments(searchParams);
 
-  const invoicesList = await InvoiceModel.find(searchParams, '_id businessName nOrder dateInvoice total dateRegister dateInvoice nInvoice concept payment.paid')
+  const invoicesList = await InvoiceModel.find(searchParams, '_id businessName nOrder dateInvoice total dateRegister dateInvoice nInvoice concept paid')
     .sort({ nOrder: -1 })
     .skip(Number(offset || 0))
     .limit(Number(limit || 100))
