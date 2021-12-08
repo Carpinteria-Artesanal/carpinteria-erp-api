@@ -115,7 +115,6 @@ class InvoicesController {
       .tap(this.invoiceValidator.createParams)
       .tap(this.invoiceValidator.validateNInvoice)
       .then(this.invoiceService.expenseCreate)
-      // .tap(this.paymentService.create)
       .tap(this.billingService.add)
       .tap(this.billingService.refresh)
       .then(data => res.send(data))

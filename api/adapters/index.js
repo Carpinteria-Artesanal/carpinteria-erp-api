@@ -3,6 +3,7 @@ const budgetAdapter = require('./budget');
 const clientInvoiceAdapter = require('./clientInvoice');
 const deliveryOrderAdapter = require('./deliveryorders');
 const invoiceAdapter = require('./invoice');
+const paymentAdapter = require('./payment');
 
 module.exports = {
   billingAdapter,
@@ -10,4 +11,5 @@ module.exports = {
   clientInvoiceAdapter,
   deliveryOrderAdapter,
   invoiceAdapter,
+  paymentAdapter,
 };

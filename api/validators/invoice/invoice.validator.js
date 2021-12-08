@@ -11,7 +11,10 @@ const {
 const {
   TYPE_PAYMENT,
 } = require('../../../constants');
-const { isNumber } = require('../../../utils');
+const {
+  isNumber,
+  roundNumber,
+} = require('../../../utils');
 
 /**
  * Check if exist id
