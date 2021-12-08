@@ -3,12 +3,16 @@ const errorHandler = require('../../../../components/error-handlers');
 
 const PaymentController = require('./payments.controller');
 
-module.exports = ({ paymentService }, { paymentValidator, productValidator }) => {
+module.exports = ({ paymentService }, {
+  paymentValidator,
+  productValidator,
+}, { paymentAdapter }) => {
   const paymentsController = new PaymentController({
     paymentService,
     errorHandler,
     paymentValidator,
     productValidator,
+    paymentAdapter,
   });
 
   return [{
