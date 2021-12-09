@@ -13,7 +13,7 @@ const unpaidInvoices = async ({
   const invoices = await ClientInvoiceModel.find(query, '_id nInvoice date total dateInvoice nameClient remaining')
     .sort({ nInvoice: -1 })
     .skip(Number(offset || 0))
-    .limit(Number(limit))
+    .limit(Number(limit || 0))
     .lean();
 
   const count = await ClientInvoiceModel.countDocuments(query);
