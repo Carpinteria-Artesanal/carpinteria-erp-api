@@ -8,8 +8,20 @@ const { ClientInvoiceModel } = require('carpinteria-erp-models');
 const unpaidInvoices = async ({
   offset,
   limit,
+  from,
+  to,
 }) => {
-  const query = { $or: [{ paid: { $exists: false } }, { paid: false }] };
+  let date = {};
+  if (from || to) {
+    date = {
+      date: {
+        ...(from && { $gte: from }),
+        ...(to && { $lt: to }),
+      },
+    };
+  }
+
+  const query = { $or: [{ paid: { $exists: false } }, { paid: false }], ...date };
   const invoices = await ClientInvoiceModel.find(query, '_id nInvoice date total dateInvoice nameClient remaining')
     .sort({ nInvoice: -1 })
     .skip(Number(offset || 0))
