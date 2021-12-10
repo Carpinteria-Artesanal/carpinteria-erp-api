@@ -9,14 +9,17 @@ const invoicesShort = require('./services/invoicesShort');
 const expenseCreate = require('./services/expenseCreate');
 const exportOds = require('./services/export');
 const invoiceDelete = require('./services/invoiceDelete');
-const swap = require('./services/swap');
-
+const confirmInvoice = require('./services/confirmInvoice');
 /**
  * Get invoice data
  * @param {String} id
  * @returns {Promise<*>}
  */
 const invoice = ({ id }) => InvoiceModel.findOne({ _id: id });
+
+const payments = () => InvoiceModel.find({
+  $or: [{ paid: { $exists: false } }, { paid: false }],
+});
 
 module.exports = {
   invoice,
@@ -28,5 +31,6 @@ module.exports = {
   expenseCreate,
   exportOds,
   invoiceDelete,
-  swap,
+  payments,
+  confirmInvoice,
 };

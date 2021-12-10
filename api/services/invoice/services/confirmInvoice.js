@@ -8,7 +8,7 @@ const {
  * @param {String} id
  * @param {String} invoice
  */
-const confirm = ({
+const confirm = async ({
   invoice,
   id,
 }) => InvoiceModel.updateOne({
@@ -16,11 +16,11 @@ const confirm = ({
   'payments._id': id,
 }, {
   $set: {
-    'products.$[j].paid': true,
+    'payments.$[j].paid': true,
   },
 }, {
   new: true,
+  arrayFilters: [{ 'j._id': id }],
 });
-
 
 module.exports = confirm;

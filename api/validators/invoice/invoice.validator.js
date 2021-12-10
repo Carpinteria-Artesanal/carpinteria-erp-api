@@ -32,14 +32,11 @@ const _checkId = async id => {
  */
 const validateId = ({ id }) => _checkId(id);
 const validateIdParam = ({ params }) => validateId(params);
-const validateTwoIds = async ({
-  a,
-  b,
-}) => {
-  await _checkId(a);
-  await _checkId(b);
+const validateInvoice = ({ invoice }) => _checkId(invoice);
+const validatePayment = async ({ id, invoice }) => {
+  const invoiceExist = await InvoiceModel.exists({ _id: invoice, 'payments._id': id });
+  if (!invoiceExist) throw new invoiceErrors.PaymentNotExist();
 };
-
 /**
  * Check if year if valid
  * @param {String} year
@@ -104,7 +101,7 @@ const createParams = ({
   if (!concept || !bookColumn) throw new invoiceErrors.InvoiceParamsMissing();
 
   if (!isNumber(dateInvoice) || !isNumber(dateRegister) || !isNumber(total)
-    || !provider || !paymentType || !payments?.length)
+        || !provider || !paymentType || !payments?.length)
     throw new invoiceErrors.InvoiceParamsMissing();
 };
 
@@ -177,7 +174,8 @@ module.exports = {
   createParams,
   editBody,
   isRemovable,
-  validateTwoIds,
+  validateInvoice,
   validateNInvoice,
   validateNInvoiceEdit,
+  validatePayment,
 };

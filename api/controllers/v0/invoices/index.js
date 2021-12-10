@@ -61,6 +61,17 @@ module.exports = (
     middlewares: [
       authMiddleware,
     ],
+  },
+  {
+    method: 'get',
+    domain: 'invoices',
+    path: '/payments',
+    handler: invoicesController.payments,
+    bindTo: invoicesController,
+    skipVersion: true,
+    middlewares: [
+      authMiddleware,
+    ],
   }, {
     method: 'patch',
     domain: 'invoices',
@@ -104,6 +115,17 @@ module.exports = (
     ],
   },
   {
+    method: 'patch',
+    domain: 'invoices',
+    path: '/:invoice/payments/:id',
+    handler: invoicesController.applyPayment,
+    bindTo: invoicesController,
+    skipVersion: true,
+    middlewares: [
+      authMiddleware,
+    ],
+  },
+  {
     method: 'get',
     domain: 'invoices',
     path: '/:id',
@@ -118,16 +140,6 @@ module.exports = (
     domain: 'invoices',
     path: '/:id/confirm',
     handler: invoicesController.invoiceConfirm,
-    bindTo: invoicesController,
-    skipVersion: true,
-    middlewares: [
-      authMiddleware,
-    ],
-  }, {
-    method: 'patch',
-    domain: 'invoices',
-    path: '/swap/:a/:b',
-    handler: invoicesController.swap,
     bindTo: invoicesController,
     skipVersion: true,
     middlewares: [

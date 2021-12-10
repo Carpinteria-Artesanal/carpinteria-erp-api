@@ -11,7 +11,6 @@ const DashboardController = require('./dashboard');
 const DeliveryOrderController = require('./deliveryOrders');
 const InvoiceController = require('./invoices');
 const NoteController = require('./notes');
-const PaymentController = require('./payments');
 const ProductController = require('./products');
 const ProviderController = require('./providers');
 
@@ -25,7 +24,6 @@ module.exports = [
   ...DeliveryOrderController(services, validators, adapters),
   ...InvoiceController(services, validators, adapters),
   ...NoteController(services, validators),
-  ...PaymentController(services, validators, adapters),
   ...ProductController(services, validators),
   ...ProviderController(services, validators),
 ];

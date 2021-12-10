@@ -9,7 +9,6 @@ const logService = new LogService(TYPE);
 class InvoicesController {
   constructor({
     invoiceService,
-    paymentService,
     errorHandler,
     invoiceAdapter,
     invoiceValidator,
@@ -20,7 +19,6 @@ class InvoicesController {
     this.invoiceService = invoiceService;
     this.errorHandler = errorHandler;
     this.invoiceAdapter = invoiceAdapter;
-    this.paymentService = paymentService;
     this.invoiceValidator = invoiceValidator;
     this.billingService = billingService;
     this.providerValidator = providerValidator;
@@ -34,6 +32,7 @@ class InvoicesController {
       this.errorHandler.sendValidationError(res)(error);
       break;
     case 'InvoiceIdNotFound':
+    case 'PaymentNotExist':
       this.errorHandler.sendNotFound(res)(error);
       break;
     case 'InvoiceParamsMissing':
@@ -53,10 +52,10 @@ class InvoicesController {
   }
 
   /**
-   * Return invoice
-   */
+     * Return invoice
+     */
   invoice(req, res) {
-    logService.logInfo('[inovice]  - Get invoice--------');
+    logService.logInfo('[inovice]  - Get invoice');
     Promise.resolve(req.params)
       .tap(this.invoiceValidator.validateId)
       .then(this.invoiceService.invoice)
@@ -66,8 +65,8 @@ class InvoicesController {
   }
 
   /**
-   * Return all invoices
-   */
+     * Return all invoices
+     */
   invoices(req, res) {
     logService.logInfo('[invoices] - List of invoices');
     Promise.resolve(req.query)
@@ -88,8 +87,8 @@ class InvoicesController {
   }
 
   /**
-   * Delete invoice
-   */
+     * Delete invoice
+     */
   delete(req, res) {
     logService.logInfo('[invoices] - Eliminar factura');
     Promise.resolve(req.params)
@@ -106,8 +105,8 @@ class InvoicesController {
   }
 
   /**
-   * Create the invoice
-   */
+     * Create the invoice
+     */
   expenseCreate(req, res) {
     logService.logInfo('[invoices] - Create invoice for expense');
     Promise.resolve(req.body)
@@ -122,8 +121,8 @@ class InvoicesController {
   }
 
   /**
-   * Edit the invoice
-   */
+     * Edit the invoice
+     */
   edit(req, res) {
     logService.logInfo('[invoices]  - Edit invoices');
     Promise.resolve(req)
@@ -137,8 +136,8 @@ class InvoicesController {
   }
 
   /**
-   * Return invoice
-   */
+     * Return invoice
+     */
   invoiceConfirm(req, res) {
     logService.logInfo('[inovice]  - Confirm invoice');
     Promise.resolve(req)
@@ -162,12 +161,24 @@ class InvoicesController {
       .catch(this._handleError.bind(this, res));
   }
 
-  swap(req, res) {
-    logService.logInfo('[inovice]  - Intercambia el número de order de dos facturas');
+  payments(req, res) {
+    logService.logInfo('[inovice]  - Lista de pagos pendientes');
+    Promise.resolve(req.query)
+      .then(this.invoiceService.payments)
+      .then(this.invoiceAdapter.paymentsResponse)
+      .then(data => res.send(data))
+      .catch(this._handleError.bind(this, res));
+  }
+
+  applyPayment(req, res) {
+    logService.logInfo('[payment]  - Confirma la realización del pago');
     Promise.resolve(req.params)
-      .tap(this.invoiceValidator.validateTwoIds)
-      .then(this.invoiceService.swap)
-      .then(() => res.status(204).send())
+      .tap(this.invoiceValidator.validateInvoice)
+      .tap(this.invoiceValidator.validatePayment)
+      .then(this.invoiceService.confirmInvoice)
+      .then(this.invoiceService.payments)
+      .then(this.invoiceAdapter.paymentsResponse)
+      .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
 }

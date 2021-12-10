@@ -119,6 +119,18 @@ class InvoiceExist extends Error {
   }
 }
 
+class PaymentNotExist extends Error {
+  /**
+   * Create an instance
+   *
+   * @param {string} [msg=user invalid login] Message for the error
+   */
+  constructor(msg = 'El pago no existe') {
+    super(msg);
+    this.name = this.constructor.name;
+  }
+}
+
 module.exports = {
   InvoiceMissingDeliveryOrders,
   InvoiceNotFoundDeliveryOrder,
@@ -130,4 +142,5 @@ module.exports = {
   InvoiceNoRemovable,
   PaymentMerged,
   InvoiceExist,
+  PaymentNotExist,
 };
