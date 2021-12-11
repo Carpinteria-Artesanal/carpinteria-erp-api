@@ -8,10 +8,12 @@ const BudgetServices = require('../budget');
  * Return all providers
  * @return {Promise<{data: any}>}
  */
-const clients = ({
+const clients = async ({
   name,
   phone,
   email,
+  offset,
+  limit,
 }) => {
   const filter = {
     ...(name && {
@@ -24,10 +26,18 @@ const clients = ({
     ...(email && { email: { $regex: email } }),
   };
 
-  return ClientModel.find(filter, 'name _id address phone email')
+  const clientList = await ClientModel.find(filter, 'name _id address phone email')
     .collation({ locale: 'es' })
+    .skip(Number(offset || 0))
+    .limit(Number(limit || 20))
     .sort({ name: 1 })
     .lean();
+
+  const count = await ClientModel.countDocuments(filter);
+  return {
+    clients: clientList,
+    count,
+  };
 };
 
 /**

@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "NODE_ENV=production NTBA_FIX_319=1000 node ./bin/www",
-    "start:dev": "NODE_ENV=dev NTBA_FIX_319=1000 nodemon ./bin/www",
+    "dev": "NODE_ENV=dev NTBA_FIX_319=1000 nodemon ./bin/www",
     "test": "NODE_ENV=test NTBA_FIX_319=1000 jest --detectOpenHandles --coverage",
     "lint": "eslint '**/*.js'"
   },
