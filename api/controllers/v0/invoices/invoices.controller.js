@@ -96,7 +96,6 @@ class InvoicesController {
       .tap(this.invoiceValidator.isRemovable)
       .then(this.invoiceService.invoiceDelete)
       .tap(this.autoIncrementService.decrementInvoice)
-      .tap(this.paymentService.remove)
       .tap(this.billingService.remove)
       .tap(this.billingService.refresh)
       .then(() => res.status(204)
@@ -130,6 +129,7 @@ class InvoicesController {
       .tap(this.invoiceValidator.editBody)
       .tap(this.invoiceValidator.validateNInvoiceEdit)
       .then(this.invoiceService.invoiceEdit)
+      .tap(this.billingService.refresh)
       .then(this.invoiceAdapter.conditionalDataTotalsResponse)
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
