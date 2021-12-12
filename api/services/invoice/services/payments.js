@@ -5,24 +5,16 @@ const { InvoiceModel } = require('carpinteria-erp-models');
  * @param {Object} params
  * @returns {Promise<*>}
  */
-const invoicePayments = ({
-  from,
-  to,
-}) => {
-  let date = {};
-  if (from || to) {
-    date = {
-      dateInvoice: {
-        ...(from && { $gte: from }),
-        ...(to && { $lt: to }),
-      },
-    };
-  }
+const invoicePayments = async (filters = {}) => {
+  const query = { $or: [{ paid: { $exists: false } }, { paid: false }] };
 
-  const query = { $or: [{ paid: { $exists: false } }, { paid: false }], ...date };
-
-  return InvoiceModel.find(query)
+  const invoices = await InvoiceModel.find(query)
     .sort({ nInvoice: -1 })
     .lean();
+
+  return {
+    invoices,
+    ...filters,
+  };
 };
 module.exports = invoicePayments;

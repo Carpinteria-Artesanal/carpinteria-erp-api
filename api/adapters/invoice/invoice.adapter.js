@@ -97,8 +97,17 @@ const compareDate = (a, b) => {
  * @param invoice
  * @returns {{nOrder: *, dateRegister: *, dateInvoice: number, nInvoice: *}}
  */
-const paymentsResponse = invoices => invoices.map(invoice => invoice.payments
-  .filter(payment => !payment.paid)
+const paymentsResponse = ({
+  invoices,
+  from,
+  to,
+}) => invoices.map(invoice => invoice.payments
+  .filter(payment => {
+    if (from && payment.paymentDate < from) return false;
+    if (to && payment.paymentDate >= to) return false;
+
+    return !payment.paid;
+  })
   .map(payment => ({
     nOrder: invoice.nOrder,
     invoiceDate: invoice.dateInvoice,
