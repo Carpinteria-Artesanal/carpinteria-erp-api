@@ -1,4 +1,7 @@
-const { InvoiceModel, BillingModel } = require('carpinteria-erp-models');
+const {
+  InvoiceModel,
+  BillingModel,
+} = require('carpinteria-erp-models');
 const roundNumber = require('../../../../utils/roundNumber');
 
 /**
@@ -12,7 +15,11 @@ const _getDataForUpdate = (data, totals) => {
   let newData = {};
   if (data) {
     const {
-      dateRegister, dateInvoice, nInvoice, concept, mailSend,
+      dateRegister,
+      dateInvoice,
+      nInvoice,
+      concept,
+      mailSend,
     } = data;
     newData = {
       dateRegister,
@@ -26,10 +33,12 @@ const _getDataForUpdate = (data, totals) => {
   if (totals) {
     const {
       total,
+      paymentType,
     } = totals;
     newData = {
       ...newData,
       total: roundNumber(total),
+      ...(paymentType && { paymentType }),
     };
   }
 
@@ -61,7 +70,13 @@ const _refreshBilling = async (id, invoice) => {
  * @param {{total: number, iva: number, re: number, rate: number, taxBase: number}} totals
  * @returns {*}
  */
-const invoiceEdit = async ({ params: { id }, body: { data, totals } }) => {
+const invoiceEdit = async ({
+  params: { id },
+  body: {
+    data,
+    totals,
+  },
+}) => {
   const newData = _getDataForUpdate(data, totals);
 
   const invoice = await InvoiceModel
@@ -73,7 +88,7 @@ const invoiceEdit = async ({ params: { id }, body: { data, totals } }) => {
     }));
 
   // eslint-disable-next-line
-    if (invoice.invoice?.nOrder && (data?.dateInvoice || totals?.total)) {
+  if (invoice.invoice?.nOrder && (data?.dateInvoice || totals?.total)) {
     await _refreshBilling(id, invoice);
   }
 
