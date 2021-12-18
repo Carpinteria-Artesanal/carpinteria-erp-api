@@ -21,6 +21,7 @@ const totalsResponse = invoice => ({
   taxBase: invoice.taxBase,
   iva: invoice.iva,
   total: invoice.total,
+  paymentType: invoice.paymentType,
 });
 
 /**
@@ -101,26 +102,37 @@ const paymentsResponse = ({
   invoices,
   from,
   to,
-}) => invoices.map(invoice => invoice.payments
-  .filter(payment => {
-    if (from && payment.paymentDate < from) return false;
-    if (to && payment.paymentDate >= to) return false;
+}) => {
+  let sum = 0;
+  const payments = invoices.map(invoice => invoice.payments
+    .filter(payment => {
+      if (from && payment.paymentDate < from) return false;
+      if (to && payment.paymentDate >= to) return false;
 
-    return !payment.paid;
-  })
-  .map(payment => ({
-    nOrder: invoice.nOrder,
-    invoiceDate: invoice.dateInvoice,
-    nInvoice: invoice.nInvoice,
-    provider: invoice.nameProvider,
-    type: invoice.paymentType,
-    amount: payment.amount,
-    paymentDate: payment.paymentDate,
-    id: payment._id,
-    invoiceId: invoice._id,
-  })))
-  .flat()
-  .sort(compareDate);
+      return !payment.paid;
+    })
+    .map(payment => {
+      if (from && to) sum += payment.amount;
+      return ({
+        nOrder: invoice.nOrder,
+        invoiceDate: invoice.dateInvoice,
+        nInvoice: invoice.nInvoice,
+        provider: invoice.nameProvider,
+        type: invoice.paymentType,
+        amount: payment.amount,
+        paymentDate: payment.paymentDate,
+        id: payment._id,
+        invoiceId: invoice._id,
+      });
+    }))
+    .flat()
+    .sort(compareDate);
+
+  return {
+    payments,
+    sum,
+  };
+};
 
 module.exports = {
   fullResponse,

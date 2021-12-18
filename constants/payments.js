@@ -6,6 +6,7 @@ const TYPE_PAYMENT = {
   TRANSFER: 'Transferencia',
   CARD: 'Tarjeta',
   REMBOLSO: 'Contra rembolso',
+  RECEIPT: 'Recibo bancario',
 };
 
 module.exports = {
