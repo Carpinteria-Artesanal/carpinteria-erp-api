@@ -19,6 +19,7 @@ const addProduct = ({
     unit,
     iva,
     price,
+    code,
   },
 }) => {
   const taxBase = roundNumber(unit * price);
@@ -35,6 +36,7 @@ const addProduct = ({
         price,
         taxBase,
         total,
+        code,
       },
     },
   }, { new: true });

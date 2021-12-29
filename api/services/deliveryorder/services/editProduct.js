@@ -21,6 +21,7 @@ const editDeliveryOrder = ({
     unit,
     iva,
     price,
+    code,
   },
 }) => {
   const taxBase = roundNumber(unit * price);
@@ -37,6 +38,7 @@ const editDeliveryOrder = ({
       'products.$[j].unit': unit,
       'products.$[j].price': price,
       'products.$[j].total': total,
+      'products.$[j].code': code,
     },
   }, {
     new: true,
