@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:14.18.2
 
 RUN mkdir -p /home/node/app/ /var/log \
   && chown -R node:node /home/node/app
