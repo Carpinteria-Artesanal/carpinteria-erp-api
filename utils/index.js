@@ -25,6 +25,9 @@ const isNumber = num => typeof num === 'number';
 
 const formatDate = date => new Date(date).toLocaleDateString('es-ES');
 
+// Datetime menos medio dia
+const getTime = date => date.getTime() - 43200000;
+
 module.exports = {
   roundNumber,
   replaceArrayElement,
@@ -32,4 +35,5 @@ module.exports = {
   isNumber,
   formatDate,
   ...payments,
+  getTime,
 };

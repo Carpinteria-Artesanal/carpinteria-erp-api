@@ -215,6 +215,26 @@ class ClientInvoicesController {
       .then(data => res.send(data))
       .catch(this._handleError.bind(this, res));
   }
+
+  billing(req, res) {
+    logService.logInfo('[billing] - Billing of client');
+    Promise.resolve(req.query)
+      .tap(this.invoiceValidator.isValidYear)
+      .then(this.clientInvoiceService.billing)
+      .then(this.clientInvoiceAdapter.billingAdapter)
+      .then(data => res.send(data))
+      .catch(this._handleError.bind(this, res));
+  }
+
+  billingExport(req, res) {
+    logService.logInfo('[billingExport] - Exportar la facturación de los clientes');
+    Promise.resolve(req.query)
+      .tap(this.invoiceValidator.isValidYear)
+      .then(this.clientInvoiceService.billing)
+      .then(billing => this.clientInvoiceService.billingExport(req.query, billing))
+      .then(data => res.send(data))
+      .catch(this._handleError.bind(this, res));
+  }
 }
 
 module.exports = ClientInvoicesController;

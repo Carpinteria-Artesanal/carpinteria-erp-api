@@ -105,6 +105,28 @@ module.exports = (
   {
     method: 'get',
     domain: 'client/invoices',
+    path: '/billing',
+    handler: clientInvoicesController.billing,
+    bindTo: clientInvoicesController,
+    skipVersion: true,
+    middlewares: [
+      authMiddleware,
+    ],
+  },
+  {
+    method: 'get',
+    domain: 'client/invoices',
+    path: '/billing/export',
+    handler: clientInvoicesController.billingExport,
+    bindTo: clientInvoicesController,
+    skipVersion: true,
+    middlewares: [
+      authMiddleware,
+    ],
+  },
+  {
+    method: 'get',
+    domain: 'client/invoices',
     path: '/:id',
     handler: clientInvoicesController.invoice,
     bindTo: clientInvoicesController,

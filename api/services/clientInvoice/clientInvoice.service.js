@@ -10,6 +10,8 @@ const invoicesShort = require('./services/invoicesShort');
 const exportOds = require('./services/export');
 const invoiceDelete = require('./services/invoiceDelete');
 const unpaidInvoices = require('./services/unpaidInvoices');
+const billing = require('./services/billing');
+const billingExport = require('./services/billingExport');
 
 const addProduct = require('./services/addProduct');
 const editProduct = require('./services/editProduct');
@@ -41,4 +43,6 @@ module.exports = {
   unpaidInvoices,
   addPayment,
   refreshPayments,
+  billing,
+  billingExport,
 };
