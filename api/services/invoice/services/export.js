@@ -102,7 +102,7 @@ const exportOds = async filters => {
   let bookFile = null;
   let error = null;
 
-  carbone.render('./templates/book.ods', invoices, {
+  carbone.render('./plantillas/libro.ods', invoices, {
     lang: 'es-es',
   }, (err, result) => {
     /* istanbul ignore next */

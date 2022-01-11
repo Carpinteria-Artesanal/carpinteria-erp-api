@@ -2,7 +2,7 @@ const { InvoiceModel } = require('carpinteria-erp-models');
 
 /**
  * Devuelve las facturas del cliente
- * @param {Object} params
+ * @param {Object} filters
  * @returns {Promise<*>}
  */
 const invoicePayments = async (filters = {}) => {

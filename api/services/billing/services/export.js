@@ -44,7 +44,7 @@ const exportOds = async ({
   let billingFile = null;
   let error = null;
 
-  carbone.render('./templates/347.ods', billing, {
+  carbone.render('./plantillas/347-proveedores.ods', billing, {
     lang: 'es-es',
   }, (err, result) => {
     /* istanbul ignore next */
