@@ -10,13 +10,26 @@ const invoicesShort = async ({
   offset,
   limit,
 }) => {
-  const invoices = await ClientInvoiceModel.find({ client }, '_id nInvoice date total')
+  let invoices = await ClientInvoiceModel.find({
+    client,
+    nInvoice: { $exists: true },
+  }, '_id nInvoice date total')
     .sort({ nInvoice: -1 })
     .skip(Number(offset || 0))
     .limit(Number(limit))
     .lean();
 
-  const count = await ClientInvoiceModel.countDocuments({ client });
+  const invoicesInProgress = await ClientInvoiceModel.find({
+    client,
+    nInvoice: { $exists: false },
+  }, '_id nInvoice date total')
+    .lean();
+
+  invoices = [
+    ...invoicesInProgress,
+    ...invoices,
+  ];
+  const count = await ClientInvoiceModel.countDocuments({ client, nInvoice: { $exists: true } });
 
   return {
     invoices,
