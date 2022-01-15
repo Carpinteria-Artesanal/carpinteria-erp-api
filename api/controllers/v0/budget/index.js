@@ -98,7 +98,7 @@ module.exports = (
       authMiddleware,
     ],
   }, {
-    method: 'put',
+    method: 'patch',
     domain: 'budgets',
     path: '/:id/product/:product',
     handler: budgetController.editProduct,
